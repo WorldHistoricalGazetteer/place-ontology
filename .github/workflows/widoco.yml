@@ -6,6 +6,12 @@ on:
       - main  # Trigger whenever you push to the main branch
     paths:
       - 'plato-ontology.ttl' # Only run when the ontology file changes
+  workflow_dispatch:  # This enables the manual trigger button
+    inputs:
+      reason:
+        description: 'Reason for manual run'
+        required: false
+        default: 'Manual documentation refresh'
 
 jobs:
   build-docs:
