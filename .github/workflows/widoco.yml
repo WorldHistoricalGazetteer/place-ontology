@@ -13,6 +13,10 @@ on:
         required: false
         default: 'Manual documentation refresh'
 
+# Required for peaceiris/actions-gh-pages to push to gh-pages branch
+permissions:
+  contents: write
+
 jobs:
   build-docs:
     runs-on: ubuntu-latest
@@ -24,37 +28,84 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '11'
+          java-version: '17'
 
       - name: Download Latest Widoco
         run: |
-          sudo apt-get update && sudo apt-get install -y jq
-    
           LATEST_URL=$(curl -s https://api.github.com/repos/dgarijo/Widoco/releases/latest \
             | jq -r '.assets[] | select(.name | endswith(".jar")) | .browser_download_url' \
             | head -n 1)
-      
+
           if [ -z "$LATEST_URL" ] || [ "$LATEST_URL" = "null" ]; then
             echo "Error: Could not find Widoco JAR."
             exit 1
           fi
-      
+
           echo "Downloading from: $LATEST_URL"
           curl -L "$LATEST_URL" -o widoco.jar
+          echo "JAR size: $(stat --printf='%s' widoco.jar) bytes"
 
       - name: Run Widoco
         run: |
           java -jar widoco.jar \
             -ontFile plato-ontology.ttl \
-            -outFolder ./docs \
+            -outFolder ./widoco-output \
             -rewriteAll \
+            -uniteSections \
             -webVowl \
-            -includeImported \
-            -licensText "CC BY 4.0" \
-            -licensURI "https://creativecommons.org/licenses/by/4.0/"
+            -includeImportedOntologies \
+            -lang en \
+            -noPlaceHolderText || true
+
+          # Widoco sometimes exits non-zero even on success, so check output
+          echo "=== Widoco output structure ==="
+          find ./widoco-output -type f | head -40
+
+      - name: Prepare publish directory
+        run: |
+          # Widoco typically puts index.html inside a subdirectory
+          # named after the ontology file, or directly in outFolder.
+          # We need to find where index.html actually landed.
+
+          if [ -f ./widoco-output/index-en.html ]; then
+            echo "Found index-en.html at top level"
+            PUBLISH_DIR=./widoco-output
+          elif [ -f ./widoco-output/doc/index-en.html ]; then
+            echo "Found index-en.html in doc/"
+            PUBLISH_DIR=./widoco-output/doc
+          elif [ -f ./widoco-output/index.html ]; then
+            echo "Found index.html at top level"
+            PUBLISH_DIR=./widoco-output
+          else
+            echo "=== Full output tree ==="
+            find ./widoco-output -type f
+            echo "ERROR: No index file found in Widoco output"
+            exit 1
+          fi
+
+          # Create a proper index.html that redirects to index-en.html
+          # (Widoco generates index-en.html, not index.html)
+          if [ -f "$PUBLISH_DIR/index-en.html" ] && [ ! -f "$PUBLISH_DIR/index.html" ]; then
+            cat > "$PUBLISH_DIR/index.html" << 'EOF'
+          <!DOCTYPE html>
+          <html><head>
+          <meta http-equiv="refresh" content="0; url=index-en.html">
+          </head><body>
+          <p>Redirecting to <a href="index-en.html">documentation</a>...</p>
+          </body></html>
+          EOF
+          fi
+
+          # Verify
+          echo "=== Files in publish dir ==="
+          ls -la "$PUBLISH_DIR"/ | head -20
+
+          # Set output for next step
+          echo "PUBLISH_DIR=$PUBLISH_DIR" >> $GITHUB_ENV
 
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs
+          publish_dir: ${{ env.PUBLISH_DIR }}
+          force_orphan: true
