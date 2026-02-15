@@ -3,10 +3,10 @@ name: Generate PLATO Documentation
 on:
   push:
     branches:
-      - main  # Trigger whenever you push to the main branch
+      - main
     paths:
-      - 'plato-ontology.ttl' # Only run when the ontology file changes
-  workflow_dispatch:  # This enables the manual trigger button
+      - 'plato-ontology.ttl'
+  workflow_dispatch:
     inputs:
       reason:
         description: 'Reason for manual run'
@@ -26,9 +26,11 @@ jobs:
           distribution: 'temurin'
           java-version: '11'
 
-      - name: Download Widoco
+      - name: Download Latest Widoco
         run: |
-          wget https://github.com/dgarijo/Widoco/releases/download/v1.4.25/widoco-1.4.25-jar-with-dependencies.jar -O widoco.jar
+          LATEST_URL=$(curl -s https://api.github.com/repos/dgarijo/Widoco/releases/latest | grep "browser_download_url.*jar-with-dependencies.jar" | cut -d '"' -f 4)
+          echo "Downloading from: $LATEST_URL"
+          curl -L "$LATEST_URL" -o widoco.jar
 
       - name: Run Widoco
         run: |
