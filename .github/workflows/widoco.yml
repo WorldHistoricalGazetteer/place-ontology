@@ -48,7 +48,7 @@ jobs:
       - name: Run Widoco
         run: |
           java -jar widoco.jar \
-            -ontFile plato-ontology.ttl \
+            -ontFile ontology.ttl \
             -outFolder ./widoco-output \
             -rewriteAll \
             -uniteSections \
