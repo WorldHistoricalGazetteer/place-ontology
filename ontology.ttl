@@ -82,15 +82,18 @@ plato:Thing
 plato:Attestation
     a owl:Class ;
     rdfs:subClassOf prov:Entity ;
-    owl:disjointWith owl:ObjectProperty ;
     rdfs:label "Attestation"@en ;
     rdfs:comment """
         A bundle of evidence asserting that a particular Thing had a particular
         Name, Geometry, Type, or combination thereof, during a particular
         Timespan, according to a particular Authority. The Attestation node
         carries only metadata; its semantic content is defined entirely by its
-        outgoing relationships. Attestations are document nodes in the graph,
-        not edges.
+        outgoing relationships.
+
+        IMPORTANT: Attestations are document nodes in the graph, not edges.
+        They are instances of plato:Attestation (a class), not instances of
+        owl:ObjectProperty. This design enables meta-attestations and full
+        provenance tracking.
     """@en .
 
 
