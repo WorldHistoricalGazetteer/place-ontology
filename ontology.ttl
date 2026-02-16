@@ -9,6 +9,8 @@
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix prov: <http://www.w3.org/ns/prov#> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
 
 
 # =============================================================================
@@ -17,7 +19,7 @@
 
 <https://w3id.org/plato>
     a owl:Ontology ;
-    owl:versionInfo "0.1.0" ;
+    owl:versionInfo "0.1.0-draft" ;
     dcterms:title "PLATO — Place Attestation Ontology"@en ;
     dcterms:description """
         An ontology for representing historical place knowledge as attestations:
@@ -31,14 +33,13 @@
         PLATO formalises the WHG v4 data model, in which the Attestation is
         the fundamental unit of contributed knowledge. It unifies and supersedes
         the Linked Places Format (LPF) and Linked Traces.
-
-        CIDOC-CRM alignment is provided as a separate mapping layer (see
-        alignments/cidoc-crm.ttl) rather than embedded in the core ontology.
-        PLATO is an identity-and-evidence model; CRM is treated as an
-        interoperability target, not a design constraint.
     """@en ;
     dcterms:creator "Pelagios Network Place Working Group" ;
-    dcterms:license <https://creativecommons.org/licenses/by/4.0/> .
+    dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
+    dcterms:created "2026-02-16"^^xsd:date ;
+    rdfs:seeAlso <https://pelagios.org/place-attestation-ontology/index-en.html> ;
+    vann:preferredNamespacePrefix "plato" ;
+    vann:preferredNamespaceUri "https://w3id.org/plato#" .
 
 
 # =============================================================================
@@ -55,14 +56,14 @@
 
 plato:Thing
     a owl:Class ;
+    rdfs:subClassOf prov:Entity ;
     rdfs:label "Thing"@en ;
     rdfs:comment """
         A stable, persistent identity representing a place or other historical
         entity related to place (routes, networks, administrative units, etc.).
         Things are not defined by any single attestation; they are the point of
         convergence for multiple attestations from different sources, periods,
-        and contributors. New Things are minted only when no existing Thing
-        (including authority records) matches the entity in question.
+        and contributors.
     """@en .
 
 
@@ -80,13 +81,16 @@ plato:Thing
 
 plato:Attestation
     a owl:Class ;
+    rdfs:subClassOf prov:Entity ;
+    owl:disjointWith owl:ObjectProperty ;
     rdfs:label "Attestation"@en ;
     rdfs:comment """
         A bundle of evidence asserting that a particular Thing had a particular
         Name, Geometry, Type, or combination thereof, during a particular
         Timespan, according to a particular Authority. The Attestation node
         carries only metadata; its semantic content is defined entirely by its
-        outgoing relationships.
+        outgoing relationships. Attestations are document nodes in the graph,
+        not edges.
     """@en .
 
 
@@ -122,6 +126,11 @@ plato:Geometry
         A spatial representation of a Thing's extent or location. Geometries
         are independent, reusable entities. The same Geometry may be referenced
         by multiple Attestations across different Things or time periods.
+
+        Note: GeometryCollection is not supported in some graph database
+        implementations. For heterogeneous geometry sets (e.g., both point and
+        polygon), use multiple Geometry entities linked through separate
+        attestations.
     """@en .
 
 
@@ -134,12 +143,14 @@ plato:Geometry
 
 plato:Timespan
     a owl:Class ;
+    rdfs:subClassOf time:ProperInterval ;
     rdfs:label "Timespan"@en ;
     rdfs:comment """
         A temporal interval with start and end bounds. Timespans are
         independent, reusable entities that may be shared across multiple
         Attestations. Precision and uncertainty are expressed through
-        the start and end bound properties.
+        the start and end bound properties. Aligned with W3C Time Ontology
+        and compatible with PeriodO period definitions.
     """@en .
 
 
@@ -152,6 +163,7 @@ plato:Timespan
 
 plato:Type
     a owl:Class ;
+    rdfs:subClassOf skos:Concept ;
     rdfs:label "Type"@en ;
     rdfs:comment """
         A classification or category for a Thing, typically drawn from a
@@ -170,6 +182,13 @@ plato:Type
 
 plato:Authority
     a owl:Class ;
+    owl:disjointUnionOf (
+        plato:Source
+        plato:Dataset
+        plato:Period
+        plato:RelationType
+        plato:CertaintyLevel
+    ) ;
     rdfs:label "Authority"@en ;
     rdfs:comment """
         Abstract superclass for all reference entities that provide provenance
@@ -240,6 +259,7 @@ plato:CertaintyLevel
 
 plato:Gazetteer
     a owl:Class ;
+    rdfs:subClassOf dcat:Dataset ;
     rdfs:label "Gazetteer"@en ;
     rdfs:comment """
         A mutable, versioned workspace of Things and their associated
@@ -751,34 +771,145 @@ plato:repr_point
 # =============================================================================
 # Timespan Properties
 # =============================================================================
-# Timespans use a start/end model with explicit precision to accommodate
-# the uncertainty inherent in historical dating.
+# Timespans use a four-date model with explicit uncertainty bounds to accommodate
+# the uncertainty inherent in historical dating. This aligns with PeriodO best
+# practices while maintaining compatibility with W3C Time Ontology.
 
-plato:start
+plato:start_earliest
     a owl:DatatypeProperty ;
-    rdfs:label "start"@en ;
-    rdfs:comment "The earliest bound of this timespan (ISO 8601 or integer year)."@en ;
+    rdfs:label "start earliest"@en ;
+    rdfs:comment """
+        The earliest possible start date for this timespan. Together with
+        start_latest, defines the uncertainty range for when the interval began.
+        Use ISO 8601 format (e.g., '1453-05-29') or integer year for year-level
+        precision. May be null for unknown or deliberately open-beginning intervals.
+    """@en ;
     rdfs:domain plato:Timespan ;
     rdfs:range xsd:string .
 
-plato:end
+plato:start_latest
     a owl:DatatypeProperty ;
-    rdfs:label "end"@en ;
-    rdfs:comment "The latest bound of this timespan (ISO 8601 or integer year)."@en ;
+    rdfs:label "start latest"@en ;
+    rdfs:comment """
+        The latest possible start date for this timespan. For certain dates,
+        this equals start_earliest. For uncertain dates, defines the end of
+        the uncertainty range for when the interval began.
+    """@en ;
+    rdfs:domain plato:Timespan ;
+    rdfs:range xsd:string .
+
+plato:end_earliest
+    a owl:DatatypeProperty ;
+    rdfs:label "end earliest"@en ;
+    rdfs:comment """
+        The earliest possible end date for this timespan. Together with
+        end_latest, defines the uncertainty range for when the interval ended.
+        May be null for unknown or deliberately open-end intervals.
+    """@en ;
+    rdfs:domain plato:Timespan ;
+    rdfs:range xsd:string .
+
+plato:end_latest
+    a owl:DatatypeProperty ;
+    rdfs:label "end latest"@en ;
+    rdfs:comment """
+        The latest possible end date for this timespan. For certain dates,
+        this equals end_earliest. For uncertain dates, defines the end of
+        the uncertainty range for when the interval ended.
+    """@en ;
+    rdfs:domain plato:Timespan ;
+    rdfs:range xsd:string .
+
+plato:timespan_label
+    a owl:DatatypeProperty ;
+    rdfs:label "timespan label"@en ;
+    rdfs:comment """
+        Human-readable label for this timespan (e.g., 'Byzantine period',
+        'Early Bronze Age', 'Ming Dynasty'). Particularly useful for named
+        periods referenced across multiple attestations.
+    """@en ;
     rdfs:domain plato:Timespan ;
     rdfs:range xsd:string .
 
 plato:start_precision
     a owl:DatatypeProperty ;
     rdfs:label "start precision"@en ;
-    rdfs:comment "Precision of the start bound: 'year', 'decade', 'century', 'approximate'."@en ;
+    rdfs:comment """
+        Temporal granularity of the start bound. Values: 'year', 'decade',
+        'century', 'era', 'geological_period'. This describes the resolution
+        of the date specification, distinct from uncertainty (which describes
+        the confidence in that specification).
+    """@en ;
     rdfs:domain plato:Timespan ;
     rdfs:range xsd:string .
 
 plato:end_precision
     a owl:DatatypeProperty ;
     rdfs:label "end precision"@en ;
-    rdfs:comment "Precision of the end bound: 'year', 'decade', 'century', 'approximate'."@en ;
+    rdfs:comment """
+        Temporal granularity of the end bound. Values: 'year', 'decade',
+        'century', 'era', 'geological_period'.
+    """@en ;
+    rdfs:domain plato:Timespan ;
+    rdfs:range xsd:string .
+
+plato:precision_value
+    a owl:DatatypeProperty ;
+    rdfs:label "precision value"@en ;
+    rdfs:comment """
+        Numeric precision indicator in years. For example, a decade-level
+        precision would have value 10, century-level would be 100. Enables
+        computational comparison of precision across timespans.
+    """@en ;
+    rdfs:domain plato:Timespan ;
+    rdfs:range xsd:integer .
+
+plato:open_start
+    a owl:DatatypeProperty ;
+    rdfs:label "open start"@en ;
+    rdfs:comment """
+        Boolean flag indicating that the start of this interval is deliberately
+        unspecified (not merely unknown). True for intervals like 'everything
+        before 1453' or 'prehistory until...'. Distinct from null start_earliest,
+        which indicates unknown start. Aligns with PeriodO's OpenBeginningInterval.
+    """@en ;
+    rdfs:domain plato:Timespan ;
+    rdfs:range xsd:boolean .
+
+plato:open_end
+    a owl:DatatypeProperty ;
+    rdfs:label "open end"@en ;
+    rdfs:comment """
+        Boolean flag indicating that the end of this interval is deliberately
+        unspecified (not merely unknown). True for ongoing periods like 'Modern
+        era (1800-present)' or situations where the end does not exist. Aligns
+        with PeriodO's OpenEndInterval.
+    """@en ;
+    rdfs:domain plato:Timespan ;
+    rdfs:range xsd:boolean .
+
+plato:periodo_uri
+    a owl:DatatypeProperty ;
+    rdfs:label "PeriodO URI"@en ;
+    rdfs:comment """
+        Link to a PeriodO period definition (https://perio.do/). When a timespan
+        corresponds to a standardized period in PeriodO, this property enables
+        alignment and allows PLATO to inherit PeriodO's temporal bounds, spatial
+        coverage, and cultural context. Example: 'https://n2t.net/ark:/99152/p06v8w4rb38'
+    """@en ;
+    rdfs:domain plato:Timespan ;
+    rdfs:range xsd:anyURI .
+
+plato:edtf_string
+    a owl:DatatypeProperty ;
+    rdfs:label "EDTF string"@en ;
+    rdfs:comment """
+        Extended Date/Time Format (EDTF) representation of this timespan.
+        Provides standardized string encoding for interchange with systems
+        using EDTF. Optional but recommended for interoperability with library
+        and archival systems. Example: '1453-05-29/1453-05-29' or '1450~/1453~'
+        for approximate dates.
+    """@en ;
     rdfs:domain plato:Timespan ;
     rdfs:range xsd:string .
 
@@ -856,6 +987,58 @@ plato:bibliographic_string
     rdfs:label "bibliographic string"@en ;
     rdfs:comment "A formatted citation string for this source."@en ;
     rdfs:domain plato:Source ;
+    rdfs:range xsd:string .
+
+
+# =============================================================================
+# Period Properties
+# =============================================================================
+# Period authorities can either link to a Timespan node (for locally defined
+# periods) or reference a PeriodO URI (for standardized period definitions).
+
+plato:has_timespan
+    a owl:ObjectProperty ;
+    rdfs:label "has timespan"@en ;
+    rdfs:comment """
+        Links a Period authority to its temporal extent, represented as a
+        Timespan node. Used for locally-defined periods or when more detailed
+        temporal modeling is needed than provided by external period definitions.
+    """@en ;
+    rdfs:domain plato:Period ;
+    rdfs:range plato:Timespan .
+
+plato:period_periodo_uri
+    a owl:DatatypeProperty ;
+    rdfs:label "PeriodO URI"@en ;
+    rdfs:comment """
+        Link to a PeriodO period definition for this Period authority.
+        When present, indicates this Period aligns with a standardized PeriodO
+        definition. The PeriodO record provides authoritative temporal bounds,
+        spatial extent, and cultural context. Example: 'https://n2t.net/ark:/99152/p06v8w4rb38'
+    """@en ;
+    rdfs:domain plato:Period ;
+    rdfs:range xsd:anyURI .
+
+plato:period_label
+    a owl:DatatypeProperty ;
+    rdfs:label "period label"@en ;
+    rdfs:comment """
+        Human-readable label for this period (e.g., 'Byzantine period',
+        'Han Dynasty', 'Early Bronze Age'). Distinct from authority_title,
+        which may be more formal.
+    """@en ;
+    rdfs:domain plato:Period ;
+    rdfs:range xsd:string .
+
+plato:spatial_coverage
+    a owl:DatatypeProperty ;
+    rdfs:label "spatial coverage"@en ;
+    rdfs:comment """
+        Geographic or cultural region to which this period applies.
+        Free text or URI to a place/region. Useful because periods like
+        'Medieval' have different temporal bounds in different regions.
+    """@en ;
+    rdfs:domain plato:Period ;
     rdfs:range xsd:string .
 
 
