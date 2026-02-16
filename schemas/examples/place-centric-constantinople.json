@@ -5,7 +5,13 @@
   "gazetteer": {
     "title": "Byzantine Cities Gazetteer",
     "description": "Historical cities of the Byzantine Empire and their predecessors.",
-    "contributor": "https://orcid.org/0000-0000-0000-0001",
+    "contributor": {
+      "@id": "https://orcid.org/0000-0003-9876-5432",
+      "name": "Maria Komnena",
+      "orcid": "https://orcid.org/0000-0003-9876-5432",
+      "affiliation": "Byzantine Studies Institute",
+      "role": "data_curator"
+    },
     "licence": "https://creativecommons.org/licenses/by/4.0/"
   },
 
@@ -16,16 +22,35 @@
       "attestations": [
         {
           "names": [
-            { "toponym": "Βυζάντιον", "language": "grc", "script": "Grek", "romanisation": "Byzantion" }
+            {
+              "toponym": "Βυζάντιον",
+              "language": "grc",
+              "script": "Grek",
+              "romanized": "Byzantion",
+              "transliterationSystem": "ISO 843",
+              "nameType": ["toponym"]
+            }
           ],
           "geometries": [
             {
               "geojson": { "type": "Point", "coordinates": [28.9784, 41.0082] },
-              "reprPoint": [28.9784, 41.0082]
+              "reprPoint": [28.9784, 41.0082],
+              "bbox": [28.97, 41.00, 28.98, 41.01],
+              "spatialPrecision": ["approximate"],
+              "precisionKm": [2.0],
+              "sourceCrs": "EPSG:4326"
             }
           ],
           "timespans": [
-            { "start": "-0667", "end": "0330", "startPrecision": "approximate", "endPrecision": "year" }
+            {
+              "startEarliest": "-0670",
+              "startLatest": "-0664",
+              "endEarliest": "0330",
+              "endLatest": "0330",
+              "label": "Ancient Greek period",
+              "startPrecision": "decade",
+              "endPrecision": "year"
+            }
           ],
           "types": [
             { "identifier": "http://vocab.getty.edu/aat/300008347", "label": "inhabited place" }
@@ -34,15 +59,36 @@
             { "title": "Herodotus, Histories IV.144", "citation": "Hdt. 4.144" }
           ],
           "certainty": 0.9,
-          "notes": "Founded as Byzantion by Megarian colonists."
+          "notes": "Founded as Byzantion by Megarian colonists.",
+          "created": "2026-02-16T10:00:00Z"
         },
         {
           "names": [
-            { "toponym": "Κωνσταντινούπολις", "language": "grc", "script": "Grek", "romanisation": "Konstantinoupolis" },
-            { "toponym": "Constantinople", "language": "en" }
+            {
+              "toponym": "Κωνσταντινούπολις",
+              "language": "grc",
+              "script": "Grek",
+              "romanized": "Konstantinoupolis",
+              "transliterationSystem": "ISO 843",
+              "nameType": ["toponym"]
+            },
+            {
+              "toponym": "Constantinople",
+              "language": "en",
+              "script": "Latn",
+              "nameType": ["toponym"]
+            }
           ],
           "timespans": [
-            { "start": "0330", "end": "1453", "startPrecision": "year", "endPrecision": "year" }
+            {
+              "startEarliest": "0330",
+              "startLatest": "0330",
+              "endEarliest": "1453",
+              "endLatest": "1453",
+              "label": "Byzantine period",
+              "startPrecision": "year",
+              "endPrecision": "year"
+            }
           ],
           "types": [
             { "identifier": "http://vocab.getty.edu/aat/300008347", "label": "inhabited place" },
@@ -51,14 +97,26 @@
           "sources": [
             { "title": "Notitia Urbis Constantinopolitanae", "uri": "https://www.example.org/notitia" }
           ],
-          "certainty": 1.0
+          "certainty": 1.0,
+          "created": "2026-02-16T10:00:00Z"
         },
         {
           "names": [
-            { "toponym": "İstanbul", "language": "tr" }
+            {
+              "toponym": "İstanbul",
+              "language": "tr",
+              "script": "Latn",
+              "nameType": ["toponym"]
+            }
           ],
           "timespans": [
-            { "start": "1453", "startPrecision": "year" }
+            {
+              "startEarliest": "1453",
+              "startLatest": "1453",
+              "label": "Ottoman/Modern period",
+              "startPrecision": "year",
+              "openEnd": true
+            }
           ],
           "types": [
             { "identifier": "http://vocab.getty.edu/aat/300008347", "label": "inhabited place" }
@@ -66,7 +124,8 @@
           "sources": [
             { "title": "GeoNames", "uri": "https://www.geonames.org/745044/" }
           ],
-          "certainty": 1.0
+          "certainty": 1.0,
+          "created": "2026-02-16T10:00:00Z"
         }
       ]
     }

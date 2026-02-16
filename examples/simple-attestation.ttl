@@ -54,8 +54,10 @@ whgx:name/bristowe-enm
 
 whgx:timespan/1480
     a plato:Timespan ;
-    plato:start "1480" ;
-    plato:end "1480" ;
+    plato:start_earliest "1480" ;
+    plato:start_latest "1480" ;
+    plato:end_earliest "1480" ;
+    plato:end_latest "1480" ;
     plato:start_precision "year" ;
     plato:end_precision "year" .
 
@@ -81,11 +83,15 @@ whgx:dataset/london-customs
 
 
 # -----------------------------------------------------------------------------
-# The scholar — identified by ORCiD in production; anonymous here
+# The scholar — identified by ORCID
 # -----------------------------------------------------------------------------
 
 whgx:contributor/trade-historian
-    a plato:Contributor .
+    a plato:Contributor ;
+    plato:contributor_name "Jane Smith" ;
+    plato:contributor_orcid "https://orcid.org/0000-0002-1234-5678" ;
+    plato:contributor_affiliation_string "University of Pittsburgh" ;
+    plato:contributor_role "principal_investigator" .
 
 
 # -----------------------------------------------------------------------------

@@ -1,5 +1,6 @@
 @prefix plato: <https://w3id.org/plato#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix whgx: <https://whgazetteer.org/example/> .
 
 # The "whgx:" prefix is used throughout these examples for illustrative
@@ -59,13 +60,18 @@ whgx:reltype/capital-of
 
 whgx:name/karakorum-mn
     a plato:Name ;
-    plato:toponym "Karakorum"@mn ;
-    plato:language "mn" .
+    plato:toponym "Каракорум" ;
+    plato:language "mn" ;
+    plato:script "Cyrl" ;
+    plato:romanized "Karakorum" ;
+    plato:name_type "toponym" .
 
 whgx:name/mongol-empire-en
     a plato:Name ;
-    plato:toponym "Mongol Empire"@en ;
-    plato:language "en" .
+    plato:toponym "Mongol Empire" ;
+    plato:language "en" ;
+    plato:script "Latn" ;
+    plato:name_type "toponym" .
 
 
 # -----------------------------------------------------------------------------
@@ -74,10 +80,13 @@ whgx:name/mongol-empire-en
 
 whgx:timespan/karakorum-capital
     a plato:Timespan ;
-    plato:start "1235" ;
-    plato:end "1260" ;
-    plato:start_precision "approximate" ;
-    plato:end_precision "approximate" .
+    plato:start_earliest "1230" ;
+    plato:start_latest "1240" ;
+    plato:end_earliest "1256" ;
+    plato:end_latest "1263" ;
+    plato:start_precision "decade" ;
+    plato:end_precision "decade" ;
+    plato:timespan_label "Karakorum as Mongol capital (uncertain dates)" .
 
 
 # -----------------------------------------------------------------------------
@@ -110,10 +119,18 @@ whgx:dataset/mongol-secondary
 # -----------------------------------------------------------------------------
 
 whgx:contributor/scholar-a
-    a plato:Contributor .
+    a plato:Contributor ;
+    plato:contributor_name "David Morgan" ;
+    plato:contributor_orcid "https://orcid.org/0000-0001-2345-6789" ;
+    plato:contributor_affiliation_string "Central Asian Studies Program" ;
+    plato:contributor_role "principal_investigator" .
 
 whgx:contributor/scholar-b
-    a plato:Contributor .
+    a plato:Contributor ;
+    plato:contributor_name "Thomas Allsen" ;
+    plato:contributor_orcid "https://orcid.org/0000-0002-3456-7890" ;
+    plato:contributor_affiliation_string "College of New Jersey" ;
+    plato:contributor_role "external_contributor" .
 
 
 # -----------------------------------------------------------------------------
@@ -148,7 +165,7 @@ whgx:attestation/karakorum-capital
 whgx:attestation/karakorum-dispute
     a plato:Attestation ;
     plato:meta_attestation_about whgx:attestation/karakorum-capital ;
-    plato:has_meta_type "refines" ;
+    plato:has_meta_type whgx:meta-type/refines ;
     plato:sourced_by whgx:source/allsen-2001 ;
     plato:contributed_by whgx:contributor/scholar-b ;
     plato:certainty 0.7 ;
@@ -160,6 +177,12 @@ whgx:attestation/karakorum-dispute
         discrete event.
     """ ;
     plato:created "2026-02-15T16:00:00Z"^^xsd:dateTime .
+
+# Meta-attestation type as SKOS concept
+whgx:meta-type/refines
+    a skos:Concept ;
+    skos:prefLabel "refines"@en ;
+    skos:definition "Provides more precise information than the target attestation"@en .
 
 
 # =============================================================================

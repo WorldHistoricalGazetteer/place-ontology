@@ -20,8 +20,8 @@
 
     "precision": {
       "type": "string",
-      "enum": ["day", "month", "year", "decade", "century", "millennium", "approximate"],
-      "description": "Precision of a temporal bound."
+      "enum": ["day", "month", "year", "decade", "century", "era", "geological_period"],
+      "description": "Precision/granularity of a temporal bound."
     },
 
     "unitFloat01": {
@@ -87,15 +87,35 @@
       "description": "A toponym or appellation. Reusable across attestations and Things.",
       "properties": {
         "@id": { "$ref": "#/$defs/uri", "description": "Stable URI for this Name node, if it has one." },
-        "toponym": { "type": "string", "description": "The name string." },
+        "toponym": { "type": "string", "description": "The name string in its original script." },
         "language": { "$ref": "#/$defs/languageTag" },
         "script": {
           "type": "string",
           "description": "ISO 15924 script code (e.g. 'Latn', 'Arab', 'Grek')."
         },
-        "romanisation": {
+        "nameType": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["toponym", "chrononym", "ethnonym", "demonym", "odonym", "hydronym"]
+          },
+          "description": "Type(s) of name: toponym (place), chrononym (period), ethnonym (people), demonym (inhabitants), odonym (street), hydronym (water body)."
+        },
+        "romanized": {
           "type": "string",
-          "description": "Romanised form if the toponym is in a non-Latin script."
+          "description": "Romanised/transliterated form if the toponym is in a non-Latin script."
+        },
+        "transliterationSystem": {
+          "type": "string",
+          "description": "The transliteration/romanization system used (e.g. 'Pinyin', 'BGN/PCGN', 'ISO 259')."
+        },
+        "ipa": {
+          "type": "string",
+          "description": "International Phonetic Alphabet representation of pronunciation."
+        },
+        "nameEmbedding": {
+          "type": "string",
+          "description": "Vector embedding for phonetic similarity search (format: implementation-specific, typically 256-dimensional vector)."
         },
         "qualification": { "$ref": "#/$defs/qualification" }
       },
@@ -106,7 +126,7 @@
 
     "geometry": {
       "type": "object",
-      "description": "A spatial representation. May be absolute (WKT or GeoJSON) or relative (via qualification.relativeTo).",
+      "description": "A spatial representation. Supports both WKT and GeoJSON formats, with precision metadata.",
       "properties": {
         "@id": { "$ref": "#/$defs/uri" },
         "wkt": {
@@ -115,11 +135,11 @@
         },
         "geojson": {
           "type": "object",
-          "description": "GeoJSON Geometry object (Point, Polygon, LineString, etc.).",
+          "description": "GeoJSON Geometry object (Point, Polygon, LineString, etc.). Note: GeometryCollection not supported in some implementations.",
           "properties": {
             "type": {
               "type": "string",
-              "enum": ["Point", "MultiPoint", "LineString", "MultiLineString", "Polygon", "MultiPolygon", "GeometryCollection"]
+              "enum": ["Point", "MultiPoint", "LineString", "MultiLineString", "Polygon", "MultiPolygon"]
             },
             "coordinates": {}
           },
@@ -127,10 +147,38 @@
         },
         "reprPoint": {
           "type": "array",
-          "description": "Representative point as [longitude, latitude].",
+          "description": "Representative point as [longitude, latitude]. Required for spatial indexing.",
           "items": { "type": "number" },
           "minItems": 2,
           "maxItems": 2
+        },
+        "bbox": {
+          "type": "array",
+          "description": "Bounding box: [min_lon, min_lat, max_lon, max_lat].",
+          "items": { "type": "number" },
+          "minItems": 4,
+          "maxItems": 4
+        },
+        "hull": {
+          "type": "string",
+          "description": "Convex hull as WKT Polygon for quick spatial filtering."
+        },
+        "spatialPrecision": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["exact", "approximate", "uncertain", "historical_approximate"]
+          },
+          "description": "Spatial precision qualifier(s)."
+        },
+        "precisionKm": {
+          "type": "array",
+          "items": { "type": "number", "minimum": 0 },
+          "description": "Uncertainty radius in kilometers."
+        },
+        "sourceCrs": {
+          "type": "string",
+          "description": "Original coordinate reference system (e.g. 'EPSG:4326')."
         },
         "qualification": { "$ref": "#/$defs/qualification" }
       },
@@ -140,13 +188,21 @@
 
     "timespan": {
       "type": "object",
-      "description": "A temporal interval with start/end bounds and precision metadata.",
+      "description": "A temporal interval with explicit uncertainty bounds using a four-date model. Aligned with PeriodO best practices.",
       "properties": {
         "@id": { "$ref": "#/$defs/uri" },
-        "start": { "$ref": "#/$defs/isoOrYear", "description": "Earliest bound." },
-        "end": { "$ref": "#/$defs/isoOrYear", "description": "Latest bound." },
+        "startEarliest": { "$ref": "#/$defs/isoOrYear", "description": "Earliest possible start date." },
+        "startLatest": { "$ref": "#/$defs/isoOrYear", "description": "Latest possible start date." },
+        "endEarliest": { "$ref": "#/$defs/isoOrYear", "description": "Earliest possible end date." },
+        "endLatest": { "$ref": "#/$defs/isoOrYear", "description": "Latest possible end date." },
+        "label": { "type": "string", "description": "Human-readable period name (e.g. 'Byzantine period')." },
         "startPrecision": { "$ref": "#/$defs/precision" },
         "endPrecision": { "$ref": "#/$defs/precision" },
+        "precisionValue": { "type": "integer", "description": "Numeric precision in years." },
+        "openStart": { "type": "boolean", "description": "True if start is deliberately unspecified (not just unknown)." },
+        "openEnd": { "type": "boolean", "description": "True if end is deliberately unspecified (not just unknown)." },
+        "periodoUri": { "$ref": "#/$defs/uri", "description": "Link to PeriodO period definition." },
+        "edtfString": { "type": "string", "description": "Extended Date/Time Format representation." },
         "qualification": { "$ref": "#/$defs/qualification" }
       },
       "additionalProperties": false
@@ -218,16 +274,19 @@
 
     "metaAttestation": {
       "type": "object",
-      "description": "A reference to a target attestation and the nature of the commentary.",
+      "description": "A reference to a target attestation and the nature of the commentary. Meta-types use SKOS concepts for vocabulary management.",
       "properties": {
         "targetAttestation": {
           "$ref": "#/$defs/uri",
           "description": "URI of the attestation being commented on."
         },
         "metaType": {
+          "$ref": "#/$defs/uri",
+          "description": "URI of a SKOS concept defining the nature of the meta-attestation (e.g. contradicts, supports, supersedes, refines, bundles)."
+        },
+        "metaTypeLabel": {
           "type": "string",
-          "enum": ["contradicts", "supports", "supersedes", "refines", "bundles"],
-          "description": "Nature of the meta-attestation."
+          "description": "Human-readable label for the meta-type (optional, for convenience)."
         }
       },
       "required": ["targetAttestation", "metaType"],
@@ -301,9 +360,12 @@
           "description": "Free-text notes providing additional context."
         },
 
-        "contributedBy": {
-          "type": "string",
-          "description": "Identifier or URI of the contributor."
+        "contributor": {
+          "oneOf": [
+            { "$ref": "#/$defs/uri", "description": "URI reference to a Contributor." },
+            { "$ref": "#/$defs/contributorObject" }
+          ],
+          "description": "The contributor who created this attestation (URI or inline object)."
         },
         "created": {
           "type": "string",
@@ -316,6 +378,49 @@
           "description": "When this attestation was last modified."
         }
       },
+      "additionalProperties": false
+    },
+
+
+    "contributorObject": {
+      "type": "object",
+      "description": "A person, team, or automated process that creates attestations. ORCID required in WHG but optional in general ontology.",
+      "properties": {
+        "@id": { "$ref": "#/$defs/uri", "description": "URI for this contributor." },
+        "name": {
+          "type": "string",
+          "description": "Full name for persons, team name for groups, descriptive name for automated processes."
+        },
+        "orcid": {
+          "type": "string",
+          "pattern": "^https://orcid\\.org/\\d{4}-\\d{4}-\\d{4}-\\d{3}[0-9X]$",
+          "description": "ORCID identifier in full URI format (https://orcid.org/0000-0000-0000-0000). Preferred format for persistent identification."
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "Contact email address."
+        },
+        "affiliation": {
+          "type": "string",
+          "description": "Organizational affiliation (free text or URI to Organization)."
+        },
+        "role": {
+          "type": "string",
+          "enum": ["principal_investigator", "data_curator", "student_researcher", "automated_process", "external_contributor"],
+          "description": "Role in the project or gazetteer."
+        },
+        "url": {
+          "$ref": "#/$defs/uri",
+          "description": "Website or profile URL for the contributor."
+        },
+        "identifier": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Additional persistent identifiers (ISNI, VIAF, Wikidata QID, etc.). Format: 'TYPE:value' (e.g., 'VIAF:12345678')."
+        }
+      },
+      "required": ["name"],
       "additionalProperties": false
     },
 

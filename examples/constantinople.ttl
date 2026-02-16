@@ -40,18 +40,28 @@ whgx:thing/constantinople
 
 whgx:name/byzantion-grc
     a plato:Name ;
-    plato:toponym "Byzantion"@grc ;
-    plato:language "grc" .
+    plato:toponym "Βυζάντιον" ;
+    plato:language "grc" ;
+    plato:script "Grek" ;
+    plato:romanized "Byzantion" ;
+    plato:transliteration_system "ISO 843" ;
+    plato:name_type "toponym" .
 
 whgx:name/konstantinoupolis-grc
     a plato:Name ;
-    plato:toponym "Konstantinoupolis"@grc ;
-    plato:language "grc" .
+    plato:toponym "Κωνσταντινούπολις" ;
+    plato:language "grc" ;
+    plato:script "Grek" ;
+    plato:romanized "Konstantinoupolis" ;
+    plato:transliteration_system "ISO 843" ;
+    plato:name_type "toponym" .
 
 whgx:name/istanbul-tr
     a plato:Name ;
-    plato:toponym "İstanbul"@tr ;
-    plato:language "tr" .
+    plato:toponym "İstanbul" ;
+    plato:language "tr" ;
+    plato:script "Latn" ;
+    plato:name_type "toponym" .
 
 
 # -----------------------------------------------------------------------------
@@ -61,21 +71,33 @@ whgx:name/istanbul-tr
 whgx:geometry/ancient-settlement
     a plato:Geometry ;
     plato:geo_wkt "POINT(28.9784 41.0082)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
-    plato:repr_point "POINT(28.9784 41.0082)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> .
+    plato:repr_point "POINT(28.9784 41.0082)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+    plato:bbox "28.97, 41.00, 28.98, 41.01" ;
+    plato:spatial_precision "approximate" ;
+    plato:precision_km 2.0 ;
+    plato:source_crs "EPSG:4326" .
 
 whgx:geometry/byzantine-walls
     a plato:Geometry ;
     plato:geo_wkt """POLYGON((28.9550 41.0020, 28.9550 41.0200,
                               29.0100 41.0200, 29.0100 41.0020,
                               28.9550 41.0020))"""^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
-    plato:repr_point "POINT(28.9784 41.0082)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> .
+    plato:repr_point "POINT(28.9784 41.0082)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+    plato:bbox "28.95, 41.00, 29.01, 41.02" ;
+    plato:spatial_precision "historical_approximate" ;
+    plato:precision_km 0.5 ;
+    plato:source_crs "EPSG:4326" .
 
 whgx:geometry/ottoman-expanded
     a plato:Geometry ;
     plato:geo_wkt """POLYGON((28.9200 40.9800, 28.9200 41.0500,
                               29.0800 41.0500, 29.0800 40.9800,
                               28.9200 40.9800))"""^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
-    plato:repr_point "POINT(28.9784 41.0082)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> .
+    plato:repr_point "POINT(28.9784 41.0082)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+    plato:bbox "28.92, 40.98, 29.08, 41.05" ;
+    plato:spatial_precision "approximate" ;
+    plato:precision_km 1.0 ;
+    plato:source_crs "EPSG:4326" .
 
 
 # -----------------------------------------------------------------------------
@@ -84,24 +106,33 @@ whgx:geometry/ottoman-expanded
 
 whgx:timespan/ancient-greek
     a plato:Timespan ;
-    plato:start "-667" ;
-    plato:end "330" ;
-    plato:start_precision "approximate" ;
-    plato:end_precision "year" .
+    plato:start_earliest "-670" ;
+    plato:start_latest "-664" ;
+    plato:end_earliest "330" ;
+    plato:end_latest "330" ;
+    plato:start_precision "decade" ;
+    plato:end_precision "year" ;
+    plato:timespan_label "Ancient Greek period" .
 
 whgx:timespan/byzantine
     a plato:Timespan ;
-    plato:start "330" ;
-    plato:end "1453" ;
+    plato:start_earliest "330" ;
+    plato:start_latest "330" ;
+    plato:end_earliest "1453" ;
+    plato:end_latest "1453" ;
     plato:start_precision "year" ;
-    plato:end_precision "year" .
+    plato:end_precision "year" ;
+    plato:timespan_label "Byzantine period" .
 
 whgx:timespan/ottoman
     a plato:Timespan ;
-    plato:start "1453" ;
-    plato:end "1923" ;
+    plato:start_earliest "1453" ;
+    plato:start_latest "1453" ;
+    plato:end_earliest "1923" ;
+    plato:end_latest "1923" ;
     plato:start_precision "year" ;
-    plato:end_precision "year" .
+    plato:end_precision "year" ;
+    plato:timespan_label "Ottoman period" .
 
 
 # -----------------------------------------------------------------------------
@@ -156,7 +187,11 @@ whgx:dataset/ottoman-admin
 # -----------------------------------------------------------------------------
 
 whgx:contributor/historian
-    a plato:Contributor .
+    a plato:Contributor ;
+    plato:contributor_name "Maria Komnena" ;
+    plato:contributor_orcid "https://orcid.org/0000-0003-9876-5432" ;
+    plato:contributor_affiliation_string "Byzantine Studies Institute" ;
+    plato:contributor_role "data_curator" .
 
 
 # -----------------------------------------------------------------------------

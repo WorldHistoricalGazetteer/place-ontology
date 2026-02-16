@@ -5,17 +5,36 @@
   "gazetteer": {
     "@id": "http://whgazetteer.org/gazetteer/678",
     "title": "London Customs Accounts 1480–1485",
-    "contributor": "https://orcid.org/0000-0001-9054-4803"
+    "contributor": {
+      "@id": "https://orcid.org/0000-0002-1234-5678",
+      "name": "Jane Smith",
+      "orcid": "https://orcid.org/0000-0002-1234-5678",
+      "affiliation": "University of Pittsburgh",
+      "role": "principal_investigator"
+    }
   },
 
   "attestations": [
     {
       "about": "https://www.geonames.org/2654675/",
       "names": [
-        { "toponym": "Bristowe", "language": "enm", "script": "Latn" }
+        {
+          "toponym": "Bristowe",
+          "language": "enm",
+          "script": "Latn",
+          "nameType": ["toponym"]
+        }
       ],
       "timespans": [
-        { "start": "1480", "end": "1485", "startPrecision": "year", "endPrecision": "year" }
+        {
+          "startEarliest": "1480",
+          "startLatest": "1480",
+          "endEarliest": "1485",
+          "endLatest": "1485",
+          "label": "Account period 1480-1485",
+          "startPrecision": "year",
+          "endPrecision": "year"
+        }
       ],
       "types": [
         { "identifier": "http://vocab.getty.edu/aat/300008347", "label": "inhabited place" },
@@ -30,8 +49,8 @@
       ],
       "certainty": 0.95,
       "certaintyNote": "Clear manuscript hand; place identification confirmed by commodity context.",
-      "contributedBy": "https://orcid.org/0000-0001-9054-4803",
-      "created": "2026-02-15T14:00:00Z"
+      "contributor": "https://orcid.org/0000-0002-1234-5678",
+      "created": "2026-02-16T14:00:00Z"
     },
 
     {
@@ -40,6 +59,8 @@
         {
           "toponym": "Deptford Strand",
           "language": "en",
+          "script": "Latn",
+          "nameType": ["toponym", "odonym"],
           "qualification": {
             "uncertainty": 0.7,
             "uncertaintyNote": "Manuscript partially damaged; reading probable but not certain."
@@ -48,6 +69,8 @@
       ],
       "geometries": [
         {
+          "spatialPrecision": ["uncertain"],
+          "precisionKm": [0.5],
           "qualification": {
             "relativeTo": "https://www.geonames.org/2651048/",
             "relativeQualifier": "http://w3id.org/plato/vocab#Near",
@@ -58,13 +81,21 @@
         }
       ],
       "timespans": [
-        { "start": "1481", "startPrecision": "year" }
+        {
+          "startEarliest": "1481",
+          "startLatest": "1481",
+          "label": "First mention 1481",
+          "startPrecision": "year",
+          "openEnd": true
+        }
       ],
       "sources": [
         { "title": "TNA E 122/19/10" }
       ],
       "certainty": 0.6,
-      "certaintyNote": "Location inferred from cargo descriptions and known anchorages."
+      "certaintyNote": "Location inferred from cargo descriptions and known anchorages.",
+      "contributor": "https://orcid.org/0000-0002-1234-5678",
+      "created": "2026-02-16T14:00:00Z"
     }
   ],
 
@@ -75,8 +106,8 @@
       "identityType": "closeMatch",
       "certainty": 0.7,
       "basis": "Deptford Strand is likely a waterfront area within modern Deptford, but the historical extent is uncertain.",
-      "assertedBy": "https://orcid.org/0000-0001-9054-4803",
-      "assertedAt": "2026-02-15T14:00:00Z"
+      "assertedBy": "https://orcid.org/0000-0002-1234-5678",
+      "assertedAt": "2026-02-16T14:00:00Z"
     }
   ]
 }
