@@ -374,13 +374,15 @@ plato:attests_type
 
 plato:sourced_by
     a owl:ObjectProperty ;
-    rdfs:subPropertyOf prov:wasDerivedFrom ;
     rdfs:label "sourced by"@en ;
     rdfs:comment """
         Links an Attestation to the Authority (typically a Source or Dataset)
         that grounds it. This provides the provenance chain for the attestation.
-        Aligns with PROV-O's wasDerivedFrom to indicate the authority is the
-        origin of the attested knowledge.
+
+        Semantically equivalent to PROV-O's prov:wasDerivedFrom, indicating the
+        authority is the origin of the attested knowledge. We don't use formal
+        rdfs:subPropertyOf to avoid importing PROV-O's domain/range constraints
+        which conflict with PLATO's class structure.
     """@en ;
     rdfs:domain plato:Attestation ;
     rdfs:range plato:Authority .
@@ -552,24 +554,28 @@ plato:notes
 
 plato:contributed_by
     a owl:ObjectProperty ;
-    rdfs:subPropertyOf prov:wasAttributedTo ;
     rdfs:label "contributed by"@en ;
     rdfs:comment """
         The agent (person, team, or process) who created this attestation.
-        Aligns with PROV-O's wasAttributedTo for provenance tracking. Distinct
-        from sourced_by, which indicates the historical source being cited.
+
+        Semantically equivalent to PROV-O's prov:wasAttributedTo for provenance
+        tracking. We don't use formal rdfs:subPropertyOf to avoid importing
+        PROV-O's domain/range constraints. Distinct from sourced_by, which
+        indicates the historical source being cited.
     """@en ;
     rdfs:domain plato:Attestation ;
     rdfs:range plato:Contributor .
 
 plato:created
     a owl:DatatypeProperty ;
-    rdfs:subPropertyOf prov:generatedAtTime ;
     rdfs:label "created"@en ;
     rdfs:comment """
         Timestamp when this attestation was created. This is the contribution
         date, not the historical timespan being attested (use attests_timespan
-        for that). Aligns with PROV-O's generatedAtTime.
+        for that).
+
+        Semantically equivalent to PROV-O's prov:generatedAtTime. We don't use
+        formal rdfs:subPropertyOf to avoid importing PROV-O constraints.
     """@en ;
     rdfs:domain plato:Attestation ;
     rdfs:range xsd:dateTime .
@@ -681,7 +687,12 @@ plato:relative_to
         may be a Thing, a Name, a Timespan, a Period, or any other node
         in the graph. For spatial relativity, the anchor is typically a
         Thing whose geometry provides the reference point.
-    """@en .
+    """@en ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf (plato:Name plato:Geometry plato:Timespan plato:Type)
+    ] ;
+    rdfs:range owl:Thing .
 
 plato:relative_bearing
     a owl:DatatypeProperty ;
