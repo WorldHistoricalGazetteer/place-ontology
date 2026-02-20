@@ -454,7 +454,7 @@
 
     "identityRelation": {
       "type": "object",
-      "description": "An assertion that two Things refer to the same real-world entity. Distinct from scholarly Thing-to-Thing relations and from algorithm-generated SoftLinks.",
+      "description": "An assertion that two Things refer to the same real-world entity. Distinct from scholarly Thing-to-Thing relations and from algorithm-generated Candidates.",
       "properties": {
         "@id": { "$ref": "#/$defs/uri" },
         "subject": {
@@ -492,7 +492,7 @@
         },
         "promotedFrom": {
           "$ref": "#/$defs/uri",
-          "description": "URI of the SoftLink from which this was promoted, if any."
+          "description": "URI of the Candidate from which this was promoted, if any."
         }
       },
       "required": ["subject", "object", "identityType"],

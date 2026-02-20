@@ -36,7 +36,7 @@ The ontology defines a small number of classes and a bundling mechanism that con
 | **Type** | A classification from a controlled vocabulary (typically AAT). Reusable. |
 | **Authority** | Abstract superclass for provenance entities, with subtypes: **Source** (a citable document), **Dataset** (a collection-level authority), **Period** (a named historical period), **RelationType** (a vocabulary entry for Thing-to-Thing relationships), and **CertaintyLevel**. |
 | **Gazetteer** | A mutable workspace of Things and Attestations, owned by a contributor or team. |
-| **SoftLink** | An algorithm-generated match candidate between two Things — explicitly *not* an Attestation until confirmed by a human reviewer. |
+| **Candidate** | An algorithm-generated match candidate between two Things — explicitly *not* an Attestation until confirmed by a human reviewer. |
 
 ### The bundling mechanism
 

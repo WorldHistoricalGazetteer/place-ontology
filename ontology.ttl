@@ -283,7 +283,7 @@ plato:GazetteerGroup
     rdfs:label "Gazetteer Group"@en ;
     rdfs:comment """
         A thematic or organisational grouping of Gazetteers (e.g.
-        'EMEW — Gazetteers of Early Modern England and Wales').
+        'EMEW — Gazetteer of Early Modern England and Wales').
     """@en .
 
 
@@ -780,14 +780,14 @@ plato:relative_qualifier
 # assert that two identifiers, potentially from different authority systems
 # or contributed gazetteers, refer to the same real-world entity.
 #
-# Identity relations are also distinct from SoftLinks: a SoftLink is an
+# Identity relations are also distinct from Candidates: a Candidate is an
 # algorithm-generated candidate that awaits human review. An IdentityRelation
 # is a human-asserted (or human-confirmed) claim about identity, with its
 # own provenance, certainty, and evidence.
 #
 # The lifecycle is:
-#   SoftLink (algorithm suggests) → human reviews →
-#     IdentityRelation (confirmed) or SoftLink (rejected/deferred)
+#   Candidate (algorithm suggests) → human reviews →
+#     IdentityRelation (confirmed) or Candidate (rejected/deferred)
 
 plato:IdentityRelation
     a owl:Class ;
@@ -800,7 +800,7 @@ plato:IdentityRelation
 
         Identity relations are distinct from scholarly Thing-to-Thing
         relations, which describe substantive historical relationships
-        between different entities. They are also distinct from SoftLinks,
+        between different entities. They are also distinct from Candidates,
         which are algorithm-generated candidates not yet confirmed by
         human review.
     """@en .
@@ -889,13 +889,13 @@ plato:promoted_from
     a owl:ObjectProperty ;
     rdfs:label "promoted from"@en ;
     rdfs:comment """
-        Links an IdentityRelation to the SoftLink from which it was
+        Links an IdentityRelation to the Candidate from which it was
         promoted, preserving the algorithmic provenance. Optional:
         identity relations can also be created directly by human
-        assertion without a prior SoftLink.
+        assertion without a prior Candidate.
     """@en ;
     rdfs:domain plato:IdentityRelation ;
-    rdfs:range plato:SoftLink .
+    rdfs:range plato:Candidate .
 
 
 # =============================================================================
@@ -1593,58 +1593,58 @@ plato:gazetteer_owner
 
 
 # =============================================================================
-# Soft Links (PLACE clustering candidates)
+# Candidates (PLACE clustering candidates)
 # =============================================================================
-# Soft links are algorithm-generated match suggestions, kept strictly separate
+# Candidates are algorithm-generated match suggestions, kept strictly separate
 # from confirmed identity assertions. They are not Attestations and they are
 # not IdentityRelations — they are candidates awaiting human review. When
-# confirmed, a SoftLink is promoted to an IdentityRelation (which preserves
+# confirmed, a Candidate is promoted to an IdentityRelation (which preserves
 # the algorithmic provenance via plato:promoted_from).
 
-plato:SoftLink
+plato:Candidate
     a owl:Class ;
-    rdfs:label "Soft Link"@en ;
+    rdfs:label "Candidate"@en ;
     rdfs:comment """
         An algorithm-generated match candidate between two Things, produced
-        by the PLACE clustering engine. Soft links carry a similarity score,
+        by the PLACE clustering engine. Candidates carry a similarity score,
         algorithm version, and review status. They are explicitly not
         IdentityRelations — they become IdentityRelations only when confirmed
         by a human reviewer (linked back via plato:promoted_from).
     """@en .
 
-plato:soft_link_source
+plato:candidate_source
     a owl:ObjectProperty ;
     rdfs:label "source thing"@en ;
-    rdfs:domain plato:SoftLink ;
+    rdfs:domain plato:Candidate ;
     rdfs:range plato:Thing .
 
-plato:soft_link_candidate
+plato:candidate_candidate
     a owl:ObjectProperty ;
     rdfs:label "candidate thing"@en ;
-    rdfs:domain plato:SoftLink ;
+    rdfs:domain plato:Candidate ;
     rdfs:range plato:Thing .
 
 plato:similarity_score
     a owl:DatatypeProperty ;
     rdfs:label "similarity score"@en ;
-    rdfs:domain plato:SoftLink ;
+    rdfs:domain plato:Candidate ;
     rdfs:range xsd:float .
 
 plato:algorithm_version
     a owl:DatatypeProperty ;
     rdfs:label "algorithm version"@en ;
-    rdfs:domain plato:SoftLink ;
+    rdfs:domain plato:Candidate ;
     rdfs:range xsd:string .
 
-plato:soft_link_status
+plato:candidate_status
     a owl:DatatypeProperty ;
     rdfs:label "status"@en ;
     rdfs:comment "Review status: 'suggested', 'confirmed', 'rejected'."@en ;
-    rdfs:domain plato:SoftLink ;
+    rdfs:domain plato:Candidate ;
     rdfs:range xsd:string .
 
 plato:generated_at
     a owl:DatatypeProperty ;
     rdfs:label "generated at"@en ;
-    rdfs:domain plato:SoftLink ;
+    rdfs:domain plato:Candidate ;
     rdfs:range xsd:dateTime .
