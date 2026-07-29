@@ -39,18 +39,33 @@ jobs:
           java-version: '17'
 
       - name: Download Latest Widoco
+        env:
+          # Authenticate the API query. Unauthenticated calls share a per-IP
+          # quota across all Actions runners and are routinely rate-limited,
+          # which returns a JSON error object with no .assets key and makes
+          # this step fail intermittently.
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          LATEST_URL=$(curl -s https://api.github.com/repos/dgarijo/Widoco/releases/latest \
-            | jq -r '.assets[] | select(.name | endswith(".jar")) | .browser_download_url' \
+          RESPONSE=$(curl -sS --retry 3 --retry-delay 5 --retry-all-errors \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            https://api.github.com/repos/dgarijo/Widoco/releases/latest)
+
+          LATEST_URL=$(printf '%s' "$RESPONSE" \
+            | jq -r '.assets[]? | select(.name | endswith(".jar")) | .browser_download_url' \
             | head -n 1)
 
           if [ -z "$LATEST_URL" ] || [ "$LATEST_URL" = "null" ]; then
-            echo "Error: Could not find Widoco JAR."
+            echo "Error: Could not find Widoco JAR. API response was:"
+            printf '%s\n' "$RESPONSE" | head -20
             exit 1
           fi
 
+          # No auth header here: the asset URL redirects to a signed storage
+          # host that rejects requests carrying an Authorization header.
           echo "Downloading from: $LATEST_URL"
-          curl -L "$LATEST_URL" -o widoco.jar
+          curl -sSL --fail --retry 3 --retry-delay 5 "$LATEST_URL" -o widoco.jar
           echo "JAR size: $(stat --printf='%s' widoco.jar) bytes"
 
       - name: Run Widoco
