@@ -1,5 +1,7 @@
 # PLATO — Place Attestation Ontology
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21688313.svg)](https://doi.org/10.5281/zenodo.21688313)
+
 **Status: Early draft — published for discussion and review. Not yet stable.**
 
 ## What is this?
@@ -90,9 +92,9 @@ PLATO is at an early stage. We welcome review, critique, and contributions:
 
 Each tagged release is archived on Zenodo with a DOI. Please cite the version you used:
 
-> Gadd, Stephen, and Pelagios Network Place Working Group. 2026. *PLATO — Place Attestation Ontology*, Version 0.1.0. Zenodo. https://doi.org/10.5281/zenodo.XXXXXXX
+> Gadd, Stephen, and Pelagios Network Place Working Group. 2026. *PLATO — Place Attestation Ontology*, Version 0.1.0. Zenodo. https://doi.org/10.5281/zenodo.21688314
 
-To cite the ontology in general rather than a specific release, use the **concept DOI**, which always resolves to the latest version: https://doi.org/10.5281/zenodo.XXXXXXX
+To cite the ontology in general rather than a specific release, use the **concept DOI**, which always resolves to the latest version: https://doi.org/10.5281/zenodo.21688313
 
 Machine-readable citation metadata is in [CITATION.cff](CITATION.cff).
 
