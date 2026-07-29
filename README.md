@@ -90,11 +90,11 @@ PLATO is at an early stage. We welcome review, critique, and contributions:
 
 ## How to cite
 
-Each tagged release is archived on Zenodo with a DOI. Please cite the version you used:
+Every tagged release is archived on Zenodo. To cite PLATO, use the **concept DOI**, which always resolves to the latest version:
 
-> Gadd, Stephen, and Pelagios Network Place Working Group. 2026. *PLATO — Place Attestation Ontology*, Version 0.1.0. Zenodo. https://doi.org/10.5281/zenodo.21688314
+> Gadd, Stephen, and Pelagios Network Place Working Group. 2026. *PLATO — Place Attestation Ontology*. Zenodo. https://doi.org/10.5281/zenodo.21688313
 
-To cite the ontology in general rather than a specific release, use the **concept DOI**, which always resolves to the latest version: https://doi.org/10.5281/zenodo.21688313
+To cite one specific release instead, take that version's own DOI from the **Versions** panel of the [Zenodo record](https://doi.org/10.5281/zenodo.21688313). Per-version DOIs are deliberately not listed here: they don't exist until the release is published, so quoting them in the README would archive a placeholder in every release.
 
 Machine-readable citation metadata is in [CITATION.cff](CITATION.cff).
 
