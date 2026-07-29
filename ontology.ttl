@@ -19,7 +19,7 @@
 
 <https://w3id.org/plato>
     a owl:Ontology ;
-    owl:versionInfo "0.1.0-draft" ;
+    owl:versionInfo "0.1.0" ;
     dcterms:title "PLATO — Place Attestation Ontology"@en ;
     dcterms:description """
         An ontology for representing historical place knowledge as attestations:
@@ -34,18 +34,20 @@
         the fundamental unit of contributed knowledge. It unifies and supersedes
         the Linked Places Format (LPF) and Linked Traces.
     """@en ;
-    dcterms:creator [
-        a foaf:Person ;
-        foaf:name "Stephen Gadd" ;
-        foaf:account <https://github.com/stephengadd> ;
-        foaf:mbox <mailto:stephen.gadd@pitt.edu>
-    ] ;
+    dcterms:creator <https://orcid.org/0000-0003-3060-0181> ;
     dcterms:contributor "Pelagios Network Place Working Group" ;
     dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
     dcterms:created "2026-02-16"^^xsd:date ;
     rdfs:seeAlso <https://pelagios.org/place-attestation-ontology/index-en.html> ;
     vann:preferredNamespacePrefix "plato" ;
     vann:preferredNamespaceUri "https://w3id.org/plato#" .
+
+
+<https://orcid.org/0000-0003-3060-0181>
+    a foaf:Person ;
+    foaf:name "Stephen Gadd" ;
+    foaf:account <https://github.com/docuracy> ;
+    foaf:mbox <mailto:stephen.gadd@pitt.edu> .
 
 
 # =============================================================================

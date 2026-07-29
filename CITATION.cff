@@ -1,0 +1,32 @@
+cff-version: 1.2.0
+message: "If you use PLATO, please cite it as below."
+title: "PLATO — Place Attestation Ontology"
+abstract: >-
+  An OWL ontology for representing historical place knowledge as attestations:
+  bundles of evidence linking Things (places, routes, networks, and other
+  entities related to place) to Names, Geometries, Timespans, Types, and
+  Authorities with full provenance. PLATO formalises the World Historical
+  Gazetteer v4 data model and is intended to unify and supersede the Linked
+  Places Format (LPF) and Linked Traces.
+type: software
+authors:
+  - family-names: Gadd
+    given-names: Stephen
+    orcid: "https://orcid.org/0000-0003-3060-0181"
+    email: stephen.gadd@pitt.edu
+    affiliation: "Institute for Spatial History Innovation (ISHI), University of Pittsburgh"
+  - name: "Pelagios Network Place Working Group"
+version: 0.1.0
+date-released: 2026-07-29
+license: CC-BY-4.0
+repository-code: "https://github.com/pelagios/place-attestation-ontology"
+url: "https://pelagios.org/place-attestation-ontology/"
+keywords:
+  - ontology
+  - OWL
+  - linked open data
+  - historical gazetteer
+  - place
+  - attestation
+  - provenance
+  - digital humanities

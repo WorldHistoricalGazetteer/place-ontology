@@ -86,6 +86,16 @@ PLATO is at an early stage. We welcome review, critique, and contributions:
 - **Start a Discussion** for broader conceptual questions.
 - **Submit a Pull Request** for concrete changes to the ontology or examples.
 
+## How to cite
+
+Each tagged release is archived on Zenodo with a DOI. Please cite the version you used:
+
+> Gadd, Stephen, and Pelagios Network Place Working Group. 2026. *PLATO — Place Attestation Ontology*, Version 0.1.0. Zenodo. https://doi.org/10.5281/zenodo.XXXXXXX
+
+To cite the ontology in general rather than a specific release, use the **concept DOI**, which always resolves to the latest version: https://doi.org/10.5281/zenodo.XXXXXXX
+
+Machine-readable citation metadata is in [CITATION.cff](CITATION.cff).
+
 ## Developed by
 
 The [Pelagios Network](https://pelagios.org) Place Working Group, led by the [Institute for Spatial History Innovation (ISHI)](https://www.ishi.pitt.edu/) at the University of Pittsburgh.
