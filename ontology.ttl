@@ -1040,6 +1040,31 @@ plato:repr_point
     rdfs:domain plato:Geometry ;
     rdfs:range geo:wktLiteral .
 
+plato:geometry_role
+    a owl:ObjectProperty ;
+    rdfs:label "geometry role"@en ;
+    rdfs:comment """
+        What this geometry depicts, as distinct from how precisely it is known
+        (plato:spatial_precision) or where its indexing point falls
+        (plato:repr_point). A Thing may be attested with several geometries at
+        once — a built extent, the location of a specific central feature, a
+        proxy standing in for the whole, the anchor of a map label — and without
+        a declared role a consumer cannot tell them apart, nor state which one
+        an analysis used.
+
+        Should point to a concept in a SKOS concept scheme (e.g. plato:Extent,
+        plato:FeaturePoint, plato:RepresentativePoint, plato:LabelAnchor,
+        plato:Itinerary). Using URIs rather than free text lets gazetteers that
+        record geometry differently be compared.
+
+        Note that role is orthogonal to precision: a proxy locator may be
+        surveyed to the metre and still not depict the Thing it stands for. A
+        parish church's coordinates contributed as a locator for a town are a
+        representative point of high precision, not an imprecise feature point.
+    """@en ;
+    rdfs:domain plato:Geometry ;
+    rdfs:range skos:Concept .
+
 plato:hull
     a owl:DatatypeProperty ;
     rdfs:label "convex hull"@en ;

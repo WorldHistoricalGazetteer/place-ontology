@@ -152,6 +152,10 @@
           "minItems": 2,
           "maxItems": 2
         },
+        "role": {
+          "$ref": "#/$defs/uri",
+          "description": "URI of a controlled-vocabulary concept stating what this geometry depicts: an extent, a feature point, a representative point standing in for the Thing, a label anchor. Orthogonal to spatialPrecision, which states how well the location is known rather than what it locates."
+        },
         "bbox": {
           "type": "array",
           "description": "Bounding box: [min_lon, min_lat, max_lon, max_lat].",

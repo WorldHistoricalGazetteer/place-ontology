@@ -1,0 +1,156 @@
+@prefix plato: <https://w3id.org/plato#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix geo: <http://www.opengis.net/ont/geosparql#> .
+@prefix whgx: <https://whgazetteer.org/example/> .
+
+# The "whgx:" prefix is used throughout these examples for illustrative
+# URIs. External URIs that already exist (Wikidata, AAT, DOIs) are used
+# directly.
+
+
+# =============================================================================
+# Geometry roles: several geometries for one Thing, each depicting
+# something different
+#
+# Scenario: an English market town is attested with four geometries drawn
+# from three datasets. Without plato:geometry_role a consumer receives
+# four coordinate sets and no way to tell a built extent from a proxy
+# locator — nor to state which one an analysis actually used.
+#
+# The roles here are illustrative concepts in a project scheme; a shared
+# scheme would be the natural home for them.
+# =============================================================================
+
+whgx:scheme\/geometry-roles
+    a skos:ConceptScheme ;
+    rdfs:label "Geometry roles (illustrative)"@en .
+
+whgx:role\/extent
+    a skos:Concept ;
+    skos:inScheme whgx:scheme\/geometry-roles ;
+    skos:prefLabel "extent"@en ;
+    skos:definition "The spatial extent of the Thing itself."@en .
+
+whgx:role\/feature-point
+    a skos:Concept ;
+    skos:inScheme whgx:scheme\/geometry-roles ;
+    skos:prefLabel "feature point"@en ;
+    skos:definition "The location of a specific named feature of the Thing."@en .
+
+whgx:role\/representative-point
+    a skos:Concept ;
+    skos:inScheme whgx:scheme\/geometry-roles ;
+    skos:prefLabel "representative point"@en ;
+    skos:definition """
+        A point standing in for the Thing as a whole, which may be derived
+        from a proxy feature rather than depicting the Thing directly.
+    """@en .
+
+whgx:role\/label-anchor
+    a skos:Concept ;
+    skos:inScheme whgx:scheme\/geometry-roles ;
+    skos:prefLabel "label anchor"@en ;
+    skos:definition "Where a label was engraved or printed on a map sheet."@en .
+
+
+# -----------------------------------------------------------------------------
+# 1. Built extent — a town footprint digitised from the OS 1st edition
+# -----------------------------------------------------------------------------
+
+whgx:geometry\/chipping-sodbury-footprint
+    a plato:Geometry ;
+    plato:geometry_role whgx:role\/extent ;
+    plato:geo_wkt "POLYGON((-2.394 51.537, -2.383 51.537, -2.383 51.543, -2.394 51.543, -2.394 51.537))"^^geo:wktLiteral ;
+    plato:repr_point "POINT(-2.3885 51.5400)"^^geo:wktLiteral ;
+    plato:spatial_precision "approximate" ;
+    plato:source_crs "EPSG:4326" .
+
+# -----------------------------------------------------------------------------
+# 2. Feature point — the market place itself
+#
+# This depicts a real feature of the town. It also serves perfectly well as
+# a locator, but that is a consequence of what it depicts, not its role.
+# -----------------------------------------------------------------------------
+
+whgx:geometry\/chipping-sodbury-market-place
+    a plato:Geometry ;
+    plato:geometry_role whgx:role\/feature-point ;
+    plato:geo_wkt "POINT(-2.3886 51.5398)"^^geo:wktLiteral ;
+    plato:repr_point "POINT(-2.3886 51.5398)"^^geo:wktLiteral ;
+    plato:spatial_precision "exact" ;
+    plato:precision_km 0.01 ;
+    plato:source_crs "EPSG:4326" .
+
+# -----------------------------------------------------------------------------
+# 3. Representative point derived from a proxy
+#
+# Where no market feature survives, a compiler may place the town's point on
+# the parish church. The coordinates are precise — the church is exactly
+# there — but the point does not depict the town's centre, and a consumer
+# needs to know that. This is the case plato:spatial_precision cannot express,
+# because precision and role are orthogonal.
+# -----------------------------------------------------------------------------
+
+whgx:geometry\/other-town-church-proxy
+    a plato:Geometry ;
+    plato:geometry_role whgx:role\/representative-point ;
+    plato:geo_wkt "POINT(-2.5121 51.4102)"^^geo:wktLiteral ;
+    plato:repr_point "POINT(-2.5121 51.4102)"^^geo:wktLiteral ;
+    plato:spatial_precision "exact" ;
+    plato:uncertainty_note """
+        Surveyed position of the parish church, contributed as a locator for
+        the town because no market feature is identifiable on the 1st-edition
+        sheets. Precise, but a proxy.
+    """@en ;
+    plato:source_crs "EPSG:4326" .
+
+# -----------------------------------------------------------------------------
+# 4. Label anchor — where the name is engraved on the sheet
+# -----------------------------------------------------------------------------
+
+whgx:geometry\/chipping-sodbury-gb1900-label
+    a plato:Geometry ;
+    plato:geometry_role whgx:role\/label-anchor ;
+    plato:geo_wkt "POINT(-2.3901 51.5411)"^^geo:wktLiteral ;
+    plato:repr_point "POINT(-2.3901 51.5411)"^^geo:wktLiteral ;
+    plato:spatial_precision "approximate" ;
+    plato:source_crs "EPSG:4326" .
+
+
+# -----------------------------------------------------------------------------
+# Bundled into attestations
+#
+# The footprint and the market place are attested together from one dataset;
+# the label anchor comes from another. Each attestation carries its own
+# source, so a consumer can select geometries by role, by source, or by both
+# — "prefer a feature point, fall back to a representative point, and record
+# which was used".
+# -----------------------------------------------------------------------------
+
+whgx:attestation\/chipping-sodbury-gis
+    a plato:Attestation ;
+    plato:attests_about whgx:thing\/chipping-sodbury ;
+    plato:attests_geometry whgx:geometry\/chipping-sodbury-footprint ,
+                           whgx:geometry\/chipping-sodbury-market-place ;
+    plato:sourced_by whgx:source\/candidate-towns-gis ;
+    plato:certainty 0.9 .
+
+whgx:attestation\/chipping-sodbury-gb1900
+    a plato:Attestation ;
+    plato:attests_about whgx:thing\/chipping-sodbury ;
+    plato:attests_geometry whgx:geometry\/chipping-sodbury-gb1900-label ;
+    plato:sourced_by whgx:source\/gb1900 .
+
+whgx:thing\/chipping-sodbury
+    a plato:Thing ;
+    rdfs:label "Chipping Sodbury"@en .
+
+whgx:source\/candidate-towns-gis
+    a plato:Source ;
+    plato:authority_title "Candidate Towns of England and Wales, c.1563–1911 (point GIS)"@en .
+
+whgx:source\/gb1900
+    a plato:Source ;
+    plato:authority_title "GB1900 gazetteer of OS map labels"@en .
