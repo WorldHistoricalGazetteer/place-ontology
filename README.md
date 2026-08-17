@@ -36,6 +36,7 @@ The ontology defines a small number of classes and a bundling mechanism that con
 | **Geometry** | A spatial representation (point, polygon, line). Reusable across attestations and Things. |
 | **Timespan** | A temporal interval with start/end bounds and precision metadata. Reusable. |
 | **Type** | A classification from a controlled vocabulary (typically AAT). Reusable. |
+| **PropertyValue** | An attribute that is none of the above — a population, a valuation, a market day. The property is identified by URI in an external vocabulary; the value may be a literal or a structured object. Reusable. |
 | **Authority** | Abstract superclass for provenance entities, with subtypes: **Source** (a citable document), **Dataset** (a collection-level authority), **Period** (a named historical period), **RelationType** (a vocabulary entry for Thing-to-Thing relationships), and **CertaintyLevel**. |
 | **Gazetteer** | A mutable workspace of Things and Attestations, owned by a contributor or team. |
 | **Candidate** | An algorithm-generated match candidate between two Things — explicitly *not* an Attestation until confirmed by a human reviewer. |
@@ -50,6 +51,7 @@ Attestation ──attests_about──▶ Thing
             ──attests_geometry▶ Geometry
             ──attests_timespan▶ Timespan
             ──attests_type────▶ Type
+            ──attests_property▶ PropertyValue
             ──sourced_by──────▶ Authority (Source)
 ```
 
@@ -71,6 +73,7 @@ The `examples/` directory contains worked examples in Turtle (RDF) format:
 - **[simple-attestation.ttl](examples/simple-attestation.ttl)** — A minimal example: a scholar attesting that a known place appears in their source with a particular name and date.
 - **[relation.ttl](examples/relation.ttl)** — A Thing-to-Thing relationship: attesting that a city was the capital of a political entity during a particular period.
 - **[geometry-roles.ttl](examples/geometry-roles.ttl)** — Four geometries for one Thing — a built extent, a market-place feature point, a proxy locator and a map label anchor — distinguished by `plato:geometry_role`.
+- **[property-values.ttl](examples/property-values.ttl)** — Attributes that are neither name, geometry, timespan nor type: a census population, and a fair's trading days as a structured recurrence rule anchored to a moveable feast.
 
 The `schemas/examples/` directory contains corresponding examples in JSON format, following the JSON Schema submission profiles:
 

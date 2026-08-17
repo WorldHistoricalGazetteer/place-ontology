@@ -184,6 +184,39 @@ plato:Type
 
 
 # -----------------------------------------------------------------------------
+# PropertyValue
+# -----------------------------------------------------------------------------
+# An attribute of a Thing that is not a Name, Geometry, Timespan or Type:
+# a population count, an elevation, a taxable valuation, a market day.
+# Like the other facets, PropertyValues are reusable nodes — one census
+# figure may be attested for several Things from a single table.
+
+plato:PropertyValue
+    a owl:Class ;
+    rdfs:label "Property Value"@en ;
+    rdfs:comment """
+        A quantitative or descriptive attribute of a Thing, expressed as a
+        property drawn from an external vocabulary together with its value.
+        Covers the many things a historical source says that are neither a
+        name, a location, a period nor a classification — populations,
+        valuations, elevations, recurrence rules for markets and fairs.
+
+        The property itself is identified by URI rather than enumerated here,
+        so the vocabulary stays open and delegated (Wikidata properties,
+        CIDOC-CRM, project vocabularies), in the same way that Type delegates
+        its classifications to AAT.
+
+        Values may be literals (with a datatype and optional unit) or
+        structured objects whose shape is declared by plato:value_type. As a
+        facet node, a PropertyValue may carry the qualification properties
+        (uncertainty, fuzziness) like any other.
+
+        Where the value is itself an entity, use a Thing-to-Thing relation
+        instead; this class is for attributes, not relationships.
+    """@en .
+
+
+# -----------------------------------------------------------------------------
 # Authority (abstract superclass)
 # -----------------------------------------------------------------------------
 # Uses a class hierarchy (mirroring v4's single table inheritance with
@@ -405,6 +438,24 @@ plato:attests_type
     """@en ;
     rdfs:domain plato:Attestation ;
     rdfs:range plato:Type .
+
+plato:attests_property
+    a owl:ObjectProperty ;
+    rdfs:label "attests property"@en ;
+    rdfs:comment """
+        Links an Attestation to a PropertyValue it asserts of the Thing — a
+        population, a valuation, an elevation, a market's trading day. An
+        attestation may assert several properties or none.
+
+        These are among the commonest things a source says about a place, and
+        they carry exactly the provenance and temporal scoping the attestation
+        pattern exists to handle: a population figure is a claim, by a named
+        source, about one Thing, over a Timespan, with a certainty. The
+        attestation's own timespans scope the property as they scope every
+        other facet in the bundle.
+    """@en ;
+    rdfs:domain plato:Attestation ;
+    rdfs:range plato:PropertyValue .
 
 plato:sourced_by
     a owl:ObjectProperty ;
@@ -1291,8 +1342,100 @@ plato:type_label
 plato:source_label
     a owl:DatatypeProperty ;
     rdfs:label "source label"@en ;
-    rdfs:comment "The original label as given in the contributing source, before vocabulary mapping."@en ;
-    rdfs:domain plato:Type ;
+    rdfs:comment """
+        The original label as given in the contributing source, before
+        vocabulary mapping. For a structured PropertyValue this preserves the
+        unparsed original — 'Monday after Whitsun, 3 days' — which is what a
+        future reader will want to check against the document.
+    """@en ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf (plato:Type plato:PropertyValue)
+    ] ;
+    rdfs:range xsd:string .
+
+
+# =============================================================================
+# PropertyValue Properties
+# =============================================================================
+# The property is identified by URI in an external vocabulary; the value is
+# either a literal (with datatype and optional unit) or a structured object
+# whose shape is declared by plato:value_type.
+
+plato:property_type
+    a owl:DatatypeProperty ;
+    rdfs:label "property type"@en ;
+    rdfs:comment """
+        URI of the property in an external vocabulary — a Wikidata property,
+        a CIDOC-CRM property, or a project vocabulary term (e.g.
+        <https://www.wikidata.org/wiki/Property:P1082> for population).
+        Keeping the vocabulary external rather than enumerating attributes in
+        this ontology is what allows the model to carry attributes it has
+        never heard of.
+    """@en ;
+    rdfs:domain plato:PropertyValue ;
+    rdfs:range xsd:anyURI .
+
+plato:property_label
+    a owl:DatatypeProperty ;
+    rdfs:label "property label"@en ;
+    rdfs:comment "Human-readable label for the property (e.g. 'population')."@en ;
+    rdfs:domain plato:PropertyValue ;
+    rdfs:range xsd:string .
+
+plato:value_literal
+    a owl:DatatypeProperty ;
+    rdfs:label "value"@en ;
+    rdfs:comment """
+        The value, where it is a literal: a number, a string, a date. Use
+        plato:value_json instead where the value is structured.
+    """@en ;
+    rdfs:domain plato:PropertyValue ;
+    rdfs:range rdfs:Literal .
+
+plato:value_datatype
+    a owl:DatatypeProperty ;
+    rdfs:label "value datatype"@en ;
+    rdfs:comment "Datatype of the literal value (e.g. xsd:integer, xsd:decimal, xsd:string)."@en ;
+    rdfs:domain plato:PropertyValue ;
+    rdfs:range xsd:anyURI .
+
+plato:value_unit
+    a owl:DatatypeProperty ;
+    rdfs:label "value unit"@en ;
+    rdfs:comment """
+        URI of the unit of measurement, where the value has one — a QUDT unit
+        or a Wikidata unit item. Omitted for counts and dimensionless values.
+    """@en ;
+    rdfs:domain plato:PropertyValue ;
+    rdfs:range xsd:anyURI .
+
+plato:value_type
+    a owl:DatatypeProperty ;
+    rdfs:label "value type"@en ;
+    rdfs:comment """
+        URI declaring the shape of a structured value, so that a consumer can
+        tell whether it understands the value before attempting to read it.
+        Omitted for literal values.
+
+        Not every attribute a source states is scalar. A market's trading day
+        — 'the Monday after Whitsun, for three days' — is a recurrence rule
+        anchored to a moveable feast, and flattening it to a string would
+        reproduce the loss this class exists to prevent. The ontology stays
+        agnostic about such shapes: it records which shape is in use and
+        leaves the definition to the vocabulary that owns it.
+    """@en ;
+    rdfs:domain plato:PropertyValue ;
+    rdfs:range xsd:anyURI .
+
+plato:value_json
+    a owl:DatatypeProperty ;
+    rdfs:label "structured value"@en ;
+    rdfs:comment """
+        A structured value serialised as JSON, whose shape is declared by
+        plato:value_type. Use plato:value_literal instead for scalar values.
+    """@en ;
+    rdfs:domain plato:PropertyValue ;
     rdfs:range xsd:string .
 
 
