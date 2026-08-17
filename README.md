@@ -70,6 +70,7 @@ The `examples/` directory contains worked examples in Turtle (RDF) format:
 - **[constantinople.ttl](examples/constantinople.ttl)** — Constantinople/Istanbul through three historical periods, demonstrating how multiple attestations with different names, geometries, and timespans converge on a single Thing.
 - **[simple-attestation.ttl](examples/simple-attestation.ttl)** — A minimal example: a scholar attesting that a known place appears in their source with a particular name and date.
 - **[relation.ttl](examples/relation.ttl)** — A Thing-to-Thing relationship: attesting that a city was the capital of a political entity during a particular period.
+- **[geometry-roles.ttl](examples/geometry-roles.ttl)** — Four geometries for one Thing — a built extent, a market-place feature point, a proxy locator and a map label anchor — distinguished by `plato:geometry_role`.
 
 The `schemas/examples/` directory contains corresponding examples in JSON format, following the JSON Schema submission profiles:
 
