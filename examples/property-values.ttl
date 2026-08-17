@@ -1,0 +1,117 @@
+@prefix plato: <https://w3id.org/plato#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix whgx: <https://whgazetteer.org/example/> .
+
+# The "whgx:" prefix is used throughout these examples for illustrative
+# URIs. External URIs that already exist (Wikidata, TNA Discovery) are used
+# directly.
+
+
+# =============================================================================
+# Property values: attributes that are neither name, geometry, timespan nor type
+#
+# Two cases, one scalar and one structured, each of which a source states
+# directly about a place and neither of which the other facets can carry.
+# =============================================================================
+
+
+# -----------------------------------------------------------------------------
+# 1. A scalar attribute: a population figure
+#
+# A textbook attestation in every respect — a claim, by a named source,
+# about one Thing, over a Timespan, with a certainty — except that until
+# now there was nowhere to put the number.
+# -----------------------------------------------------------------------------
+
+whgx:property\/andover-population-1801
+    a plato:PropertyValue ;
+    plato:property_type "https://www.wikidata.org/wiki/Property:P1082"^^xsd:anyURI ;
+    plato:property_label "population" ;
+    plato:source_label "Inhabitants" ;
+    plato:value_literal 3304 ;
+    plato:value_datatype "http://www.w3.org/2001/XMLSchema#integer"^^xsd:anyURI ;
+    plato:uncertainty 0.9 .
+
+whgx:timespan\/1801
+    a plato:Timespan ;
+    rdfs:label "1801"@en .
+
+whgx:attestation\/andover-census-1801
+    a plato:Attestation ;
+    plato:attests_about whgx:thing\/andover ;
+    plato:attests_property whgx:property\/andover-population-1801 ;
+    plato:attests_timespan whgx:timespan\/1801 ;
+    plato:sourced_by whgx:source\/census-1801 ;
+    plato:certainty 0.95 .
+
+
+# -----------------------------------------------------------------------------
+# 2. A structured attribute: a fair's trading days
+#
+# In 1515 a royal grant established four fairs at Westbury, Wiltshire. One
+# was to be held "on the Monday after Whitsun", for three days.
+#
+# That is not a Timespan: a Timespan is a proper interval, and this is a
+# recurrence rule anchored to a moveable feast, falling on a different date
+# every year. Nor is it a Type — encoding it as one would explode the
+# vocabulary with a concept per weekday per feast. Flattening it to a string
+# would lose the anchor, the offset and the duration, which is precisely
+# what happens when such data is held in spreadsheet columns.
+#
+# So the value is structured, and plato:value_type names the shape without
+# the ontology needing to know it. The attestation's timespan says the grant
+# held from 1515; the rule says which days in each of those years.
+# -----------------------------------------------------------------------------
+
+whgx:property\/westbury-fair-whitsun
+    a plato:PropertyValue ;
+    plato:property_type "https://example.org/vocab/tradingDay"^^xsd:anyURI ;
+    plato:property_label "trading day" ;
+    plato:source_label "the Monday after Whitsun, for three days" ;
+    plato:value_type "https://example.org/vocab/RecurrenceRule"^^xsd:anyURI ;
+    plato:value_json """
+        {
+          "recurrence": "annual",
+          "anchor":  { "type": "feast", "key": "whitsun" },
+          "weekday": { "day": "Monday", "direction": "after", "nth": 1 },
+          "durationDays": 3
+        }
+    """ .
+
+whgx:timespan\/from-1515
+    a plato:Timespan ;
+    rdfs:label "from 1515"@en .
+
+whgx:attestation\/westbury-fair-grant-1515
+    a plato:Attestation ;
+    plato:attests_about whgx:thing\/westbury-whitsun-fair ;
+    plato:attests_property whgx:property\/westbury-fair-whitsun ;
+    plato:attests_timespan whgx:timespan\/from-1515 ;
+    plato:sourced_by whgx:source\/patent-roll-7-hen-viii ;
+    plato:notes """
+        One of four fairs established by the same grant. Each is modelled as
+        its own Thing related to the town, so that four recurrence rules do
+        not have to share one record.
+    """@en .
+
+
+# -----------------------------------------------------------------------------
+# Things and sources referenced above
+# -----------------------------------------------------------------------------
+
+whgx:thing\/andover
+    a plato:Thing ;
+    rdfs:label "Andover"@en .
+
+whgx:thing\/westbury-whitsun-fair
+    a plato:Thing ;
+    rdfs:label "Westbury Whitsun fair"@en .
+
+whgx:source\/census-1801
+    a plato:Source ;
+    plato:authority_title "Census of Great Britain, 1801"@en .
+
+whgx:source\/patent-roll-7-hen-viii
+    a plato:Source ;
+    plato:authority_title "Patent Roll, 7 Henry VIII, part 1, membrane 7"@en .

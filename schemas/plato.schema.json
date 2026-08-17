@@ -190,6 +190,46 @@
     },
 
 
+    "propertyValue": {
+      "type": "object",
+      "description": "An attribute of a Thing that is not a Name, Geometry, Timespan or Type: a population, a valuation, an elevation, a market's trading day. The property is identified by URI in an external vocabulary; the value is either a literal or a structured object whose shape is declared by valueType.",
+      "properties": {
+        "@id": { "$ref": "#/$defs/uri" },
+        "property": {
+          "$ref": "#/$defs/uri",
+          "description": "URI of the property in an external vocabulary (e.g. a Wikidata property, a CIDOC-CRM property, a project vocabulary term)."
+        },
+        "label": {
+          "type": "string",
+          "description": "Human-readable label for the property (e.g. 'population')."
+        },
+        "sourceLabel": {
+          "type": "string",
+          "description": "The original wording in the contributing source, before mapping. For structured values this preserves the unparsed original, e.g. 'Monday after Whitsun, 3 days'."
+        },
+        "value": {
+          "description": "The value. A literal (number, string, boolean) for scalar attributes, or an object for structured ones — in which case valueType should declare its shape.",
+          "type": ["number", "string", "boolean", "object"]
+        },
+        "datatype": {
+          "$ref": "#/$defs/uri",
+          "description": "Datatype of a literal value (e.g. xsd:integer). Omitted for structured values."
+        },
+        "unit": {
+          "$ref": "#/$defs/uri",
+          "description": "URI of the unit of measurement, where the value has one. Omitted for counts and dimensionless values."
+        },
+        "valueType": {
+          "$ref": "#/$defs/uri",
+          "description": "URI declaring the shape of a structured value, so a consumer can tell whether it understands the value before reading it. Omitted for literal values."
+        },
+        "qualification": { "$ref": "#/$defs/qualification" }
+      },
+      "required": ["property", "value"],
+      "additionalProperties": false
+    },
+
+
     "timespan": {
       "type": "object",
       "description": "A temporal interval with explicit uncertainty bounds using a four-date model. Aligned with PeriodO best practices.",
@@ -327,6 +367,11 @@
           "type": "array",
           "items": { "$ref": "#/$defs/type" },
           "description": "Type classifications attested."
+        },
+        "properties": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/propertyValue" },
+          "description": "Attributes attested that are not names, geometries, timespans or types — populations, valuations, market days. Scoped by the attestation's own timespans."
         },
 
         "sources": {
