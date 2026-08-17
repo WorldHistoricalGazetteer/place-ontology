@@ -1,4 +1,5 @@
 @prefix plato: <https://w3id.org/plato#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix whgx: <https://whgazetteer.org/example/> .
@@ -28,13 +29,13 @@
 # Things
 # -----------------------------------------------------------------------------
 
-whgx:thing/karakorum
+whgx:thing\/karakorum
     a plato:Thing ;
     plato:thing_identifier "whg:karakorum" ;
     plato:namespace "whg" ;
     plato:ccodes "MN" .
 
-whgx:thing/mongol-empire
+whgx:thing\/mongol-empire
     a plato:Thing ;
     plato:thing_identifier "whg:mongol-empire" ;
     plato:namespace "whg" .
@@ -44,7 +45,7 @@ whgx:thing/mongol-empire
 # RelationType: capital_of
 # -----------------------------------------------------------------------------
 
-whgx:reltype/capital-of
+whgx:reltype\/capital-of
     a plato:RelationType ;
     plato:authority_title "capital of" ;
     plato:relation_label "capital_of" ;
@@ -58,7 +59,7 @@ whgx:reltype/capital-of
 # but included here to make the example readable)
 # -----------------------------------------------------------------------------
 
-whgx:name/karakorum-mn
+whgx:name\/karakorum-mn
     a plato:Name ;
     plato:toponym "Каракорум" ;
     plato:language "mn" ;
@@ -66,7 +67,7 @@ whgx:name/karakorum-mn
     plato:romanized "Karakorum" ;
     plato:name_type "toponym" .
 
-whgx:name/mongol-empire-en
+whgx:name\/mongol-empire-en
     a plato:Name ;
     plato:toponym "Mongol Empire" ;
     plato:language "en" ;
@@ -78,7 +79,7 @@ whgx:name/mongol-empire-en
 # Timespan
 # -----------------------------------------------------------------------------
 
-whgx:timespan/karakorum-capital
+whgx:timespan\/karakorum-capital
     a plato:Timespan ;
     plato:start_earliest "1230" ;
     plato:start_latest "1240" ;
@@ -93,23 +94,23 @@ whgx:timespan/karakorum-capital
 # Sources
 # -----------------------------------------------------------------------------
 
-whgx:source/rashid-al-din
+whgx:source\/rashid-al-din
     a plato:Source ;
     plato:authority_title "Jami' al-tawarikh (Compendium of Chronicles)" ;
     plato:bibliographic_string "Rashid al-Din, Jami' al-tawarikh, c. 1307. Ed. and trans. W.M. Thackston, 1998." ;
-    plato:partOf whgx:dataset/mongol-sources .
+    plato:partOf whgx:dataset\/mongol-sources .
 
-whgx:source/allsen-2001
+whgx:source\/allsen-2001
     a plato:Source ;
     plato:authority_title "Culture and Conquest in Mongol Eurasia" ;
     plato:bibliographic_string "Allsen, T.T. (2001). Culture and Conquest in Mongol Eurasia. Cambridge University Press." ;
-    plato:partOf whgx:dataset/mongol-secondary .
+    plato:partOf whgx:dataset\/mongol-secondary .
 
-whgx:dataset/mongol-sources
+whgx:dataset\/mongol-sources
     a plato:Dataset ;
     plato:authority_title "Primary Sources for the Mongol Empire" .
 
-whgx:dataset/mongol-secondary
+whgx:dataset\/mongol-secondary
     a plato:Dataset ;
     plato:authority_title "Secondary Literature on the Mongol Empire" .
 
@@ -118,26 +119,26 @@ whgx:dataset/mongol-secondary
 # Contributors
 # -----------------------------------------------------------------------------
 
-whgx:org/central-asian-studies
+whgx:org\/central-asian-studies
     a plato:Organization ;
     rdfs:label "Central Asian Studies Program" .
 
-whgx:org/tcnj
+whgx:org\/tcnj
     a plato:Organization ;
     rdfs:label "College of New Jersey" .
 
-whgx:contributor/scholar-a
+whgx:contributor\/scholar-a
     a plato:Contributor ;
     plato:contributor_name "David Morgan" ;
     plato:contributor_orcid "https://orcid.org/0000-0001-2345-6789" ;
-    plato:contributor_affiliation whgx:org/central-asian-studies ;
+    plato:contributor_affiliation whgx:org\/central-asian-studies ;
     plato:contributor_role "principal_investigator" .
 
-whgx:contributor/scholar-b
+whgx:contributor\/scholar-b
     a plato:Contributor ;
     plato:contributor_name "Thomas Allsen" ;
     plato:contributor_orcid "https://orcid.org/0000-0002-3456-7890" ;
-    plato:contributor_affiliation whgx:org/tcnj ;
+    plato:contributor_affiliation whgx:org\/tcnj ;
     plato:contributor_role "external_contributor" .
 
 
@@ -149,14 +150,14 @@ whgx:contributor/scholar-b
 # specifying the nature of the relationship.
 # -----------------------------------------------------------------------------
 
-whgx:attestation/karakorum-capital
+whgx:attestation\/karakorum-capital
     a plato:Attestation ;
-    plato:attests_about whgx:thing/karakorum ;
-    plato:relates_to whgx:thing/mongol-empire ;
-    plato:has_relation_type whgx:reltype/capital-of ;
-    plato:attests_timespan whgx:timespan/karakorum-capital ;
-    plato:sourced_by whgx:source/rashid-al-din ;
-    plato:contributed_by whgx:contributor/scholar-a ;
+    plato:attests_about whgx:thing\/karakorum ;
+    plato:relates_to whgx:thing\/mongol-empire ;
+    plato:has_relation_type whgx:reltype\/capital-of ;
+    plato:attests_timespan whgx:timespan\/karakorum-capital ;
+    plato:sourced_by whgx:source\/rashid-al-din ;
+    plato:contributed_by whgx:contributor\/scholar-a ;
     plato:certainty 0.85 ;
     plato:certainty_note "Well attested in Rashid al-Din, though exact dates of capital status are debated." ;
     plato:created "2026-02-15T14:00:00Z"^^xsd:dateTime .
@@ -170,12 +171,12 @@ whgx:attestation/karakorum-capital
 # both coexist, representing the state of scholarly debate.
 # -----------------------------------------------------------------------------
 
-whgx:attestation/karakorum-dispute
+whgx:attestation\/karakorum-dispute
     a plato:Attestation ;
-    plato:meta_attestation_about whgx:attestation/karakorum-capital ;
-    plato:has_meta_type whgx:meta-type/refines ;
-    plato:sourced_by whgx:source/allsen-2001 ;
-    plato:contributed_by whgx:contributor/scholar-b ;
+    plato:meta_attestation_about whgx:attestation\/karakorum-capital ;
+    plato:has_meta_type whgx:meta-type\/refines ;
+    plato:sourced_by whgx:source\/allsen-2001 ;
+    plato:contributed_by whgx:contributor\/scholar-b ;
     plato:certainty 0.7 ;
     plato:notes """
         Allsen argues that the capital function began shifting to Shangdu
@@ -187,7 +188,7 @@ whgx:attestation/karakorum-dispute
     plato:created "2026-02-15T16:00:00Z"^^xsd:dateTime .
 
 # Meta-attestation type as SKOS concept
-whgx:meta-type/refines
+whgx:meta-type\/refines
     a skos:Concept ;
     skos:prefLabel "refines"@en ;
     skos:definition "Provides more precise information than the target attestation"@en .

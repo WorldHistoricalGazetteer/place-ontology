@@ -1,4 +1,5 @@
 @prefix plato: <https://w3id.org/plato#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix whgx: <https://whgazetteer.org/example/> .
 
@@ -31,7 +32,7 @@
 # URI is the authority source, not the Thing's identity.
 # -----------------------------------------------------------------------------
 
-whgx:thing/bristol
+whgx:thing\/bristol
     a plato:Thing ;
     plato:thing_identifier "geonames:2654675" ;
     plato:namespace "geonames" .
@@ -41,7 +42,7 @@ whgx:thing/bristol
 # The Name as found in the scholar's source
 # -----------------------------------------------------------------------------
 
-whgx:name/bristowe-enm
+whgx:name\/bristowe-enm
     a plato:Name ;
     plato:toponym "Bristowe"@enm ;
     plato:language "enm" ;
@@ -52,7 +53,7 @@ whgx:name/bristowe-enm
 # Timespan: the date of the source document
 # -----------------------------------------------------------------------------
 
-whgx:timespan/1480
+whgx:timespan\/1480
     a plato:Timespan ;
     plato:start_earliest "1480" ;
     plato:start_latest "1480" ;
@@ -68,14 +69,14 @@ whgx:timespan/1480
 # The TNA Discovery URI is a real, resolvable identifier for this document.
 # -----------------------------------------------------------------------------
 
-whgx:source/tna-e122-73-12
+whgx:source\/tna-e122-73-12
     a plato:Source ;
     plato:authority_title "London customs account, 1480" ;
     plato:bibliographic_string "TNA E122/73/12, London petty custom account, Mich. 1480 – Mich. 1481" ;
     plato:authority_uri <https://discovery.nationalarchives.gov.uk/details/r/C5738289> ;
-    plato:partOf whgx:dataset/london-customs .
+    plato:partOf whgx:dataset\/london-customs .
 
-whgx:dataset/london-customs
+whgx:dataset\/london-customs
     a plato:Dataset ;
     plato:authority_title "London Customs Accounts Project" ;
     plato:publisher "University of Pittsburgh" ;
@@ -86,15 +87,15 @@ whgx:dataset/london-customs
 # The scholar — identified by ORCID
 # -----------------------------------------------------------------------------
 
-whgx:org/uofpitt
+whgx:org\/uofpitt
     a plato:Organization ;
     rdfs:label "University of Pittsburgh" .
 
-whgx:contributor/trade-historian
+whgx:contributor\/trade-historian
     a plato:Contributor ;
     plato:contributor_name "Jane Smith" ;
     plato:contributor_orcid "https://orcid.org/0000-0002-1234-5678" ;
-    plato:contributor_affiliation whgx:org/uofpitt ;
+    plato:contributor_affiliation whgx:org\/uofpitt ;
     plato:contributor_role "principal_investigator" .
 
 
@@ -102,13 +103,13 @@ whgx:contributor/trade-historian
 # The Gazetteer this attestation belongs to
 # -----------------------------------------------------------------------------
 
-whgx:gazetteer/english-trade
+whgx:gazetteer\/english-trade
     a plato:Gazetteer ;
     plato:authority_title "Ports in 15th-Century English Trade" ;
-    plato:gazetteer_owner whgx:contributor/trade-historian ;
+    plato:gazetteer_owner whgx:contributor\/trade-historian ;
     plato:gazetteer_status "draft" ;
-    plato:contains_thing whgx:thing/bristol ;
-    plato:contains_attestation whgx:attestation/bristowe-1480 .
+    plato:contains_thing whgx:thing\/bristol ;
+    plato:contains_attestation whgx:attestation\/bristowe-1480 .
 
 
 # -----------------------------------------------------------------------------
@@ -120,13 +121,13 @@ whgx:gazetteer/english-trade
 # a specific date. This is the attestation-first model in action.
 # -----------------------------------------------------------------------------
 
-whgx:attestation/bristowe-1480
+whgx:attestation\/bristowe-1480
     a plato:Attestation ;
-    plato:attests_about whgx:thing/bristol ;
-    plato:attests_name whgx:name/bristowe-enm ;
-    plato:attests_timespan whgx:timespan/1480 ;
-    plato:sourced_by whgx:source/tna-e122-73-12 ;
-    plato:contributed_by whgx:contributor/trade-historian ;
+    plato:attests_about whgx:thing\/bristol ;
+    plato:attests_name whgx:name\/bristowe-enm ;
+    plato:attests_timespan whgx:timespan\/1480 ;
+    plato:sourced_by whgx:source\/tna-e122-73-12 ;
+    plato:contributed_by whgx:contributor\/trade-historian ;
     plato:certainty 1.0 ;
     plato:certainty_note "Unambiguous identification; Bristol is the only plausible referent." ;
     plato:created "2026-02-15T12:00:00Z"^^xsd:dateTime .

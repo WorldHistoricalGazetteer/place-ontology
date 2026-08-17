@@ -1,4 +1,5 @@
 @prefix plato: <https://w3id.org/plato#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix whgx: <https://whgazetteer.org/example/> .
 
@@ -27,7 +28,7 @@
 # The Thing: a single, stable identity
 # -----------------------------------------------------------------------------
 
-whgx:thing/constantinople
+whgx:thing\/constantinople
     a plato:Thing ;
     plato:thing_identifier "constantinople" ;
     plato:namespace "whg" ;
@@ -38,7 +39,7 @@ whgx:thing/constantinople
 # Names
 # -----------------------------------------------------------------------------
 
-whgx:name/byzantion-grc
+whgx:name\/byzantion-grc
     a plato:Name ;
     plato:toponym "Βυζάντιον" ;
     plato:language "grc" ;
@@ -47,7 +48,7 @@ whgx:name/byzantion-grc
     plato:transliteration_system "ISO 843" ;
     plato:name_type "toponym" .
 
-whgx:name/konstantinoupolis-grc
+whgx:name\/konstantinoupolis-grc
     a plato:Name ;
     plato:toponym "Κωνσταντινούπολις" ;
     plato:language "grc" ;
@@ -56,7 +57,7 @@ whgx:name/konstantinoupolis-grc
     plato:transliteration_system "ISO 843" ;
     plato:name_type "toponym" .
 
-whgx:name/istanbul-tr
+whgx:name\/istanbul-tr
     a plato:Name ;
     plato:toponym "İstanbul" ;
     plato:language "tr" ;
@@ -68,7 +69,7 @@ whgx:name/istanbul-tr
 # Geometries
 # -----------------------------------------------------------------------------
 
-whgx:geometry/ancient-settlement
+whgx:geometry\/ancient-settlement
     a plato:Geometry ;
     plato:geo_wkt "POINT(28.9784 41.0082)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
     plato:repr_point "POINT(28.9784 41.0082)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
@@ -77,7 +78,7 @@ whgx:geometry/ancient-settlement
     plato:precision_km 2.0 ;
     plato:source_crs "EPSG:4326" .
 
-whgx:geometry/byzantine-walls
+whgx:geometry\/byzantine-walls
     a plato:Geometry ;
     plato:geo_wkt """POLYGON((28.9550 41.0020, 28.9550 41.0200,
                               29.0100 41.0200, 29.0100 41.0020,
@@ -88,7 +89,7 @@ whgx:geometry/byzantine-walls
     plato:precision_km 0.5 ;
     plato:source_crs "EPSG:4326" .
 
-whgx:geometry/ottoman-expanded
+whgx:geometry\/ottoman-expanded
     a plato:Geometry ;
     plato:geo_wkt """POLYGON((28.9200 40.9800, 28.9200 41.0500,
                               29.0800 41.0500, 29.0800 40.9800,
@@ -104,7 +105,7 @@ whgx:geometry/ottoman-expanded
 # Timespans
 # -----------------------------------------------------------------------------
 
-whgx:timespan/ancient-greek
+whgx:timespan\/ancient-greek
     a plato:Timespan ;
     plato:start_earliest "-670" ;
     plato:start_latest "-664" ;
@@ -114,7 +115,7 @@ whgx:timespan/ancient-greek
     plato:end_precision "year" ;
     plato:timespan_label "Ancient Greek period" .
 
-whgx:timespan/byzantine
+whgx:timespan\/byzantine
     a plato:Timespan ;
     plato:start_earliest "330" ;
     plato:start_latest "330" ;
@@ -124,7 +125,7 @@ whgx:timespan/byzantine
     plato:end_precision "year" ;
     plato:timespan_label "Byzantine period" .
 
-whgx:timespan/ottoman
+whgx:timespan\/ottoman
     a plato:Timespan ;
     plato:start_earliest "1453" ;
     plato:start_latest "1453" ;
@@ -141,7 +142,7 @@ whgx:timespan/ottoman
 # The AAT URI is the real, resolvable identifier for this concept.
 # -----------------------------------------------------------------------------
 
-whgx:type/inhabited-place
+whgx:type\/inhabited-place
     a plato:Type ;
     plato:type_identifier <http://vocab.getty.edu/aat/300008347> ;
     plato:type_label "inhabited place" .
@@ -151,33 +152,33 @@ whgx:type/inhabited-place
 # Sources
 # -----------------------------------------------------------------------------
 
-whgx:source/classical-texts
+whgx:source\/classical-texts
     a plato:Source ;
     plato:authority_title "Classical texts (composite)" ;
     plato:bibliographic_string "Various classical sources including Herodotus and Strabo" ;
-    plato:partOf whgx:dataset/classical-geography .
+    plato:partOf whgx:dataset\/classical-geography .
 
-whgx:source/byzantine-chronicle
+whgx:source\/byzantine-chronicle
     a plato:Source ;
     plato:authority_title "Byzantine Chronicle" ;
     plato:bibliographic_string "Chronicle of Constantinople, 6th century" ;
-    plato:partOf whgx:dataset/byzantine-sources .
+    plato:partOf whgx:dataset\/byzantine-sources .
 
-whgx:source/ottoman-tax-records
+whgx:source\/ottoman-tax-records
     a plato:Source ;
     plato:authority_title "Ottoman tax records" ;
     plato:bibliographic_string "Istanbul tahrir defterleri, 16th century" ;
-    plato:partOf whgx:dataset/ottoman-admin .
+    plato:partOf whgx:dataset\/ottoman-admin .
 
-whgx:dataset/classical-geography
+whgx:dataset\/classical-geography
     a plato:Dataset ;
     plato:authority_title "Classical Geography Sources" .
 
-whgx:dataset/byzantine-sources
+whgx:dataset\/byzantine-sources
     a plato:Dataset ;
     plato:authority_title "Byzantine Historical Sources" .
 
-whgx:dataset/ottoman-admin
+whgx:dataset\/ottoman-admin
     a plato:Dataset ;
     plato:authority_title "Ottoman Administrative Records" .
 
@@ -186,15 +187,15 @@ whgx:dataset/ottoman-admin
 # A contributor
 # -----------------------------------------------------------------------------
 
-whgx:org/byzantine-institute
+whgx:org\/byzantine-institute
     a plato:Organization ;
     rdfs:label "Byzantine Studies Institute" .
 
-whgx:contributor/historian
+whgx:contributor\/historian
     a plato:Contributor ;
     plato:contributor_name "Maria Komnena" ;
     plato:contributor_orcid "https://orcid.org/0000-0003-9876-5432" ;
-    plato:contributor_affiliation whgx:org/byzantine-institute ;
+    plato:contributor_affiliation whgx:org\/byzantine-institute ;
     plato:contributor_role "data_curator" .
 
 
@@ -202,15 +203,15 @@ whgx:contributor/historian
 # Attestation 1: Ancient Greek period (Byzantion)
 # -----------------------------------------------------------------------------
 
-whgx:attestation/byzantion-ancient
+whgx:attestation\/byzantion-ancient
     a plato:Attestation ;
-    plato:attests_about whgx:thing/constantinople ;
-    plato:attests_name whgx:name/byzantion-grc ;
-    plato:attests_geometry whgx:geometry/ancient-settlement ;
-    plato:attests_timespan whgx:timespan/ancient-greek ;
-    plato:attests_type whgx:type/inhabited-place ;
-    plato:sourced_by whgx:source/classical-texts ;
-    plato:contributed_by whgx:contributor/historian ;
+    plato:attests_about whgx:thing\/constantinople ;
+    plato:attests_name whgx:name\/byzantion-grc ;
+    plato:attests_geometry whgx:geometry\/ancient-settlement ;
+    plato:attests_timespan whgx:timespan\/ancient-greek ;
+    plato:attests_type whgx:type\/inhabited-place ;
+    plato:sourced_by whgx:source\/classical-texts ;
+    plato:contributed_by whgx:contributor\/historian ;
     plato:certainty 0.7 ;
     plato:certainty_note "Settlement boundaries uncertain; point location well attested." ;
     plato:created "2026-02-15T10:00:00Z"^^xsd:dateTime .
@@ -220,15 +221,15 @@ whgx:attestation/byzantion-ancient
 # Attestation 2: Byzantine period (Konstantinoupolis)
 # -----------------------------------------------------------------------------
 
-whgx:attestation/konstantinoupolis-byzantine
+whgx:attestation\/konstantinoupolis-byzantine
     a plato:Attestation ;
-    plato:attests_about whgx:thing/constantinople ;
-    plato:attests_name whgx:name/konstantinoupolis-grc ;
-    plato:attests_geometry whgx:geometry/byzantine-walls ;
-    plato:attests_timespan whgx:timespan/byzantine ;
-    plato:attests_type whgx:type/inhabited-place ;
-    plato:sourced_by whgx:source/byzantine-chronicle ;
-    plato:contributed_by whgx:contributor/historian ;
+    plato:attests_about whgx:thing\/constantinople ;
+    plato:attests_name whgx:name\/konstantinoupolis-grc ;
+    plato:attests_geometry whgx:geometry\/byzantine-walls ;
+    plato:attests_timespan whgx:timespan\/byzantine ;
+    plato:attests_type whgx:type\/inhabited-place ;
+    plato:sourced_by whgx:source\/byzantine-chronicle ;
+    plato:contributed_by whgx:contributor\/historian ;
     plato:certainty 0.95 ;
     plato:certainty_note "Well documented in multiple Byzantine sources." ;
     plato:created "2026-02-15T10:00:00Z"^^xsd:dateTime .
@@ -238,15 +239,15 @@ whgx:attestation/konstantinoupolis-byzantine
 # Attestation 3: Ottoman period (Istanbul)
 # -----------------------------------------------------------------------------
 
-whgx:attestation/istanbul-ottoman
+whgx:attestation\/istanbul-ottoman
     a plato:Attestation ;
-    plato:attests_about whgx:thing/constantinople ;
-    plato:attests_name whgx:name/istanbul-tr ;
-    plato:attests_geometry whgx:geometry/ottoman-expanded ;
-    plato:attests_timespan whgx:timespan/ottoman ;
-    plato:attests_type whgx:type/inhabited-place ;
-    plato:sourced_by whgx:source/ottoman-tax-records ;
-    plato:contributed_by whgx:contributor/historian ;
+    plato:attests_about whgx:thing\/constantinople ;
+    plato:attests_name whgx:name\/istanbul-tr ;
+    plato:attests_geometry whgx:geometry\/ottoman-expanded ;
+    plato:attests_timespan whgx:timespan\/ottoman ;
+    plato:attests_type whgx:type\/inhabited-place ;
+    plato:sourced_by whgx:source\/ottoman-tax-records ;
+    plato:contributed_by whgx:contributor\/historian ;
     plato:certainty 0.9 ;
     plato:certainty_note "Boundaries approximate; based on administrative records." ;
     plato:created "2026-02-15T10:00:00Z"^^xsd:dateTime .
